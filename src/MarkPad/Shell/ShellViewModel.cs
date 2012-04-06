@@ -342,7 +342,11 @@ namespace MarkPad.Shell
 
 		void UpdateMarkPadExtensions()
 		{
-			var settings = settingsService.GetSettings<MarkPadSettings>();
+			System.Windows.MessageBox.Show("todo: spell check setting");
+
+			/*
+			var settings = settingsService.GetSettings<MarkpadSettings>();
+>>>>>>> Refactor extension management, new assembly for shared extension interfaces, per #151
 			var extensions = new List<IMarkPadExtension>();
 			if (settings.SpellCheckEnabled)
 			{
@@ -350,6 +354,7 @@ namespace MarkPad.Shell
 				extensions.Add(spellCheck);
 			}
 			MarkPadExtensionsProvider.Extensions = extensions;
+			 * */
 		}
 
 	}

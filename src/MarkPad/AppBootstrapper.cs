@@ -37,7 +37,7 @@ namespace MarkPad
 
         protected override void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<ServicesModule>();
+            builder.RegisterModule<MarkPad.Services.ServicesModule>();
             builder.RegisterType<JumpListIntegration>().SingleInstance();
 			builder.RegisterModule<MarkPad.MarkPadExtensions.MarkPadExtensionsAutofacModule>();
         }
@@ -55,6 +55,8 @@ namespace MarkPad
         protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
         {
             base.OnStartup(sender, e);
+
+
 
             jumpList = Container.Resolve<JumpListIntegration>();
 
