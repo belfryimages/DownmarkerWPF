@@ -6,13 +6,13 @@ using MarkPad.Extensions;
 
 namespace ExampleExtension
 {
-	public class ExampleExtension
-		: ICanCreateNewPage
+	public class ExampleExtension : 
+		IMarkPadExtension,
+		ICanCreateNewPage
 	{
-		public string CreateNewPageLabel
-		{
-			get { return "Example - New page"; }
-		}
+		public string Name { get { return "Example extension"; } }
+
+		public string CreateNewPageLabel { get { return "Example - New page"; } }
 
 		public string CreateNewPage()
 		{
