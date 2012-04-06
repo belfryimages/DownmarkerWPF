@@ -20,7 +20,7 @@ using MarkPad.Framework.Events;
 using MarkPad.Services.Settings;
 using MarkPad.XAML;
 using System.Windows.Media;
-using MarkPad.Services.MarkPadExtensions;
+using MarkPad.Extensions;
 using MarkPad.MarkPadExtensions;
 
 namespace MarkPad.Document

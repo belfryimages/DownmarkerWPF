@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MarkPad.Services.MarkPadExtensions;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using MarkPad.Extensions;
 
 namespace MarkPad.MarkPadExtensions
 {
