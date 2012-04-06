@@ -10,9 +10,12 @@ namespace MarkPad.MarkPadExtensions
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
+			// SpellCheck should be extracted into an extension and this should be removed:
 			builder
 				.RegisterType<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
 				.As<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>();
+
+			builder.RegisterType<MarkPadExtensionsManager>().SingleInstance();
 		}
 	}
 }
