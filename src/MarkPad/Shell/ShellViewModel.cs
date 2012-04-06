@@ -346,14 +346,10 @@ namespace MarkPad.Shell
 
 		void UpdateMarkPadExtensions()
 		{
-			//System.Windows.MessageBox.Show("todo: spell check setting");
 			System.Windows.MessageBox.Show("Extensions: " + extensionsManager.Extensions.Count());
 			foreach (var e in extensionsManager.Extensions) System.Windows.MessageBox.Show(e.Name);
 
-
-
 			/*
-			var settings = settingsService.GetSettings<MarkpadSettings>();
 			var extensions = new List<IMarkPadExtension>();
 			if (settings.SpellCheckEnabled)
 			{
