@@ -171,6 +171,10 @@
       <HintPath>..\..\lib\Hunspell.0.9.6.0\lib\net20\NHunspell.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NuGet.Core, Version=1.7.30402.9028, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NuGet.Core.1.7.0\lib\net40-Client\NuGet.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Ookii.Dialogs.Wpf">
       <HintPath>..\..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
@@ -178,6 +182,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MahApps.Metro.0.7.9.54-ALPHA\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -197,6 +202,7 @@
     <Compile Include="Document\MarkPadHyperlink.cs" />
     <Compile Include="Extensions\DataImage.cs" />
     <Compile Include="Extensions\DataObjectExtensions.cs" />
+    <Compile Include="MarkPadExtensions\MarkPadExtensionsManager.cs" />
     <Compile Include="MarkPadExtensions\MarkPadExtensionsAutofacModule.cs" />
     <Compile Include="MarkPadExtensions\IDocumentViewExtension.cs" />
     <Compile Include="MarkPadExtensions\SpellCheck\SpellCheckExtension.cs" />
@@ -215,7 +221,13 @@
     </Compile>
     <Compile Include="HyperlinkEditor\HyperlinkEditorViewModel.cs" />
     <Compile Include="MarkPadExtensions\SpellCheck\SpellCheckProvider.cs" />
+    <Compile Include="MarkPadSettings.cs" />
     <Compile Include="OpenFromWeb\Entry.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Settings\BlogSettingsView.xaml.cs">
       <DependentUpon>BlogSettingsView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -331,6 +343,10 @@
     <None Include="packages.config" />
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Syntax\Markdown.xshd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Document\DocumentView.xaml">
@@ -358,6 +374,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MarkPad.Extensions\MarkPad.Extensions.csproj">
+      <Project>{0BF56AF2-85EB-4397-87CA-D414C6FDC5A3}</Project>
+      <Name>MarkPad.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MarkPad.Services\MarkPad.Services.csproj">
       <Project>{8088D80C-14AF-4618-B12A-F47C2771EBDD}</Project>
       <Name>MarkPad.Services</Name>

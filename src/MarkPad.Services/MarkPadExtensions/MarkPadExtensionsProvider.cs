@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MarkPad.Services.MarkPadExtensions
 {
+	[Obsolete("use MarkPadExtensionsManager",true)]
 	public static class MarkPadExtensionsProvider
 	{
 		static IEnumerable<IMarkPadExtension> _extensions = new IMarkPadExtension[0];
