@@ -17,7 +17,6 @@ using MarkPad.Settings;
 using Ookii.Dialogs.Wpf;
 using MarkPad.Updater;
 using MarkPad.Extensions;
-using MarkPad.MarkPadExtensions;
 
 namespace MarkPad.Shell
 {

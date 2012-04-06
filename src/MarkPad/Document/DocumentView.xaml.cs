@@ -22,7 +22,6 @@ using MarkPad.Extensions;
 using MarkPad.Framework;
 using MarkPad.Framework.Events;
 using MarkPad.MarkPadExtensions;
-using MarkPad.Services.MarkPadExtensions;
 using MarkPad.Services.Settings;
 using MarkPad.XAML;
 using System.Windows.Media;
@@ -156,13 +155,13 @@ namespace MarkPad.Document
 			foreach (var extension in extensionsToAdd)
 			{
 				extension.ConnectToDocumentView(this);
-				extensions.Add(extension);
+				this.extensions.Add(extension);
 			}
 
 			foreach (var extension in extensionsToRemove)
 			{
 				extension.DisconnectFromDocumentView(this);
-				extensions.Remove(extension);
+				this.extensions.Remove(extension);
 			}
 		}
 
