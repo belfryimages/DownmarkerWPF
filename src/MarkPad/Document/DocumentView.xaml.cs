@@ -22,7 +22,6 @@ using MarkPad.Extensions;
 using MarkPad.Framework;
 using MarkPad.Framework.Events;
 using MarkPad.MarkPadExtensions;
-using MarkPad.Services.MarkPadExtensions;
 using MarkPad.Services.Settings;
 using MarkPad.XAML;
 
@@ -39,19 +38,13 @@ namespace MarkPad.Document
 		private readonly ISettingsProvider settingsProvider;
 		private readonly MarkPadExtensionsManager _markPadExtensionsManager;
 
-<<<<<<< HEAD
 		MarkPadSettings settings;
 
-		public DocumentView(ISettingsProvider settingsProvider)
-        {
-			this.settingsProvider = settingsProvider;
-=======
 		public DocumentView(ISettingsProvider settingsProvider,
 			MarkPadExtensionsManager markPadExtensionsManager)
         {
 			this.settingsProvider = settingsProvider;
 			_markPadExtensionsManager = markPadExtensionsManager;
->>>>>>> Refactor extension management, new assembly for shared extension interfaces, per #151
 
             InitializeComponent();
             
@@ -151,26 +144,20 @@ namespace MarkPad.Document
 
 		private void ApplyExtensions()
 		{
-<<<<<<< HEAD
-			var allExtensions = MarkPadExtensionsProvider.Extensions.OfType<IDocumentViewExtension>().ToList();
-			var extensionsToAdd = allExtensions.Except(extensions).ToList();
-			var extensionsToRemove = extensions.Except(allExtensions).ToList();
-=======
 			var extensions = _markPadExtensionsManager.Extensions.OfType<IDocumentViewExtension>();
 			var extensionsToAdd = extensions.Except(this.extensions).ToList();
 			var extensionsToRemove = this.extensions.Except(extensions).ToList();
->>>>>>> Refactor extension management, new assembly for shared extension interfaces, per #151
 
 			foreach (var extension in extensionsToAdd)
 			{
 				extension.ConnectToDocumentView(this);
-				extensions.Add(extension);
+				this.extensions.Add(extension);
 			}
 
 			foreach (var extension in extensionsToRemove)
 			{
 				extension.DisconnectFromDocumentView(this);
-				extensions.Remove(extension);
+				this.extensions.Remove(extension);
 			}
 		}
 
