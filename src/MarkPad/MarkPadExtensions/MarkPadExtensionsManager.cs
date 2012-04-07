@@ -93,7 +93,6 @@ namespace MarkPad.MarkPadExtensions
 			if (Directory.Exists(GetLibDir(e))) _catalog.Catalogs.Add(new DirectoryCatalog(GetLibDir(e)));
 
 			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
-
 		}
 
 		void PackageUninstalled(object sender, PackageOperationEventArgs e)
@@ -115,7 +114,6 @@ namespace MarkPad.MarkPadExtensions
 		{
 			return String.Equals(path1.TrimEnd(Path.DirectorySeparatorChar), path2.TrimEnd(Path.DirectorySeparatorChar), StringComparison.OrdinalIgnoreCase);
 		}
-
 
 		public IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions()
 		{
