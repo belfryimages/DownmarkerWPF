@@ -9,15 +9,15 @@ namespace MarkPad
 {
     public static class Constants
     {
-        public static readonly string[] DefaultExtensions = new[] { ".md", ".markdown", ".mdown", ".mkd" };
+        public static readonly string[] DefaultFileAssociations = new[] { ".md", ".markdown", ".mdown", ".mkd" };
 
         public static readonly string[] Icons = new[] { "markpaddoc.ico" };
 
-        public static string ExtensionFilter
+        public static string FileAssociationExtensionFilter
         {
             get
             {
-                var extWildcards = DefaultExtensions.Select(ext => "*" + ext).ToArray();
+                var extWildcards = DefaultFileAssociations.Select(ext => "*" + ext).ToArray();
 
                 return "Markdown Files (" + string.Join(", ", extWildcards) + ")|" + string.Join(";", extWildcards);
             }

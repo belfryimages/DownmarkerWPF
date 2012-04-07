@@ -2,9 +2,9 @@ using Caliburn.Micro;
 
 namespace MarkPad.Settings
 {
-    public class ExtensionViewModel : PropertyChangedBase
+    public class FileAssociationViewModel : PropertyChangedBase
     {
-        public ExtensionViewModel(string extension, bool enabled)
+        public FileAssociationViewModel(string extension, bool enabled)
         {
             Extension = extension;
             Enabled = enabled;

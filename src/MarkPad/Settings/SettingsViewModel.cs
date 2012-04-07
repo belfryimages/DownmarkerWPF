@@ -19,7 +19,7 @@ namespace MarkPad.Settings
     {
         public const string FontSizeSettingsKey = "Font";
         public const string FontFamilySettingsKey = "FontFamily";
-        public IEnumerable<ExtensionViewModel> Extensions { get; set; }
+        public IEnumerable<FileAssociationViewModel> FileAssociations { get; set; }
         public IEnumerable<FontSizes> FontSizes { get; set; }
         public IEnumerable<FontFamily> FontFamilies { get; set; }
         public ObservableCollection<BlogSetting> Blogs { get; set; }
@@ -53,8 +53,8 @@ namespace MarkPad.Settings
         {
             using (var key = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("Classes"))
             {
-                Extensions = Constants.DefaultExtensions
-                    .Select(s => new ExtensionViewModel(s,
+                FileAssociations = Constants.DefaultFileAssociations
+                    .Select(s => new FileAssociationViewModel(s,
                         key.GetSubKeyNames().Contains(s) && !string.IsNullOrEmpty(key.OpenSubKey(s).GetValue("").ToString())))
                     .ToArray();
             }
@@ -212,7 +212,7 @@ namespace MarkPad.Settings
 
             using (var key = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("Classes", true))
             {
-                foreach (var ext in Extensions)
+                foreach (var ext in FileAssociations)
                 {
                     using (var extensionKey = key.CreateSubKey(ext.Extension))
                     {
