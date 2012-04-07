@@ -15,6 +15,22 @@ namespace MarkPad.MarkPadExtensions
 			_package = package;
 		}
 
-		public string Title { get { return _package.Title; } }
+		public string Title
+		{
+			get
+			{
+				if (!string.IsNullOrEmpty(_package.Title)) return _package.Title;
+				return _package.Id;
+			}
+		}
+		public string Authors { get { return string.Join(", ", _package.Authors); } }
+		public string Description
+		{
+			get
+			{
+				if (!string.IsNullOrEmpty(_package.Description)) return _package.Description;
+				return "";
+			}
+		}
 	}
 }
