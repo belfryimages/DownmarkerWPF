@@ -30,8 +30,7 @@ namespace MarkPad.MarkPadExtensions
 			// Register the package manager (where MarkPad's extensions are installed by NuGet):
 			builder.Register<IPackageManager>(c => new PackageManager(c.Resolve<IPackageRepository>(), extensionsFolder));
 
-
-			builder.RegisterType<MarkPadExtensionsManager>().SingleInstance();
+			builder.RegisterType<MarkPadExtensionsManager>().As<IMarkPadExtensionsManager>().SingleInstance();
 		}
 	}
 }
