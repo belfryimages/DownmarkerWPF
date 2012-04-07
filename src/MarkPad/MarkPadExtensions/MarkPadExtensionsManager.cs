@@ -16,26 +16,8 @@ namespace MarkPad.MarkPadExtensions
 {
 	public interface IMarkPadExtensionsManager
 	{
-		IEnumerable<IMarkPadExtension> Extensions { get; }
+		ObservableCollection<IMarkPadExtension> Extensions { get; }
 		IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions();
-	}
-
-	public class TestExtension : ICanCreateNewPage
-	{
-		public string Name
-		{
-			get{return "TestExtension";}
-		}
-
-		public string CreateNewPageLabel
-		{
-			get { return "TestExtension Create";}
-		}
-
-		public string CreateNewPage()
-		{
-			return "# Hello!";
-		}
 	}
 
 	public class MarkPadExtensionsManager : IMarkPadExtensionsManager
