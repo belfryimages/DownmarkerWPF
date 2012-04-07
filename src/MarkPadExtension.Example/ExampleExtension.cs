@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using MarkPad.Extensions;
 
-namespace ExampleExtension
+namespace MarkPadExtension.Example
 {
 	public class ExampleExtension : 
 		IMarkPadExtension,
