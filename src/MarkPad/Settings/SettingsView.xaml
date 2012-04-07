@@ -169,7 +169,8 @@
             <TabItem Header="extensions">
 				<StackPanel Margin="15,0,0,0">
 					<TextBlock TextWrapping="Wrap" FontSize="26.667" Foreground="White" FontWeight="Light" Text="extensions"/>
-					<ListView ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" Height="130">
+					<ListView ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" 
+								Height="130">
 						<ListBox.ItemsPanel>
 							<ItemsPanelTemplate>
 								<StackPanel/>
@@ -180,7 +181,13 @@
 								<GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
 								<GridViewColumn Header="Authors" DisplayMemberBinding="{Binding Authors}" />
 								<GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
-								<GridViewColumn Header="Installed"/>
+								<GridViewColumn Header="Install">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Button Content="Install" Style="{DynamicResource SquareButtonStyle}"/>
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
 							</GridView>
 						</ListView.View>
 					</ListView>
