@@ -32,10 +32,11 @@ namespace MarkPad.Document
         private ScrollViewer documentScrollViewer;
 		private IList<IDocumentViewExtension> extensions = new List<IDocumentViewExtension>();
 		private readonly ISettingsProvider settingsProvider;
-		private readonly MarkPadExtensionsManager _markPadExtensionsManager;
+		private readonly IMarkPadExtensionsManager _markPadExtensionsManager;
 
-		public DocumentView(ISettingsProvider settingsProvider,
-			MarkPadExtensionsManager markPadExtensionsManager)
+		public DocumentView(
+			ISettingsProvider settingsProvider,
+			IMarkPadExtensionsManager markPadExtensionsManager)
         {
 			this.settingsProvider = settingsProvider;
 			_markPadExtensionsManager = markPadExtensionsManager;

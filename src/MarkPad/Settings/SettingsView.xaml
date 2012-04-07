@@ -167,8 +167,16 @@
 				</StackPanel>
             </TabItem>
             <TabItem Header="extensions">
-
-            </TabItem>
+				<StackPanel Margin="15,0,0,0">
+					<TextBlock TextWrapping="Wrap" FontSize="26.667" Foreground="White" FontWeight="Light" Text="extensions"/>
+					<ListBox ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" Height="130" DisplayMemberPath="Title">
+						<ListBox.Resources>
+							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Red" Opacity=".5"/>
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Red"  Opacity="0.25"/>
+						</ListBox.Resources>
+					</ListBox>
+				</StackPanel>
+			</TabItem>
         </TabControl>
     </Grid>
 </UserControl>
