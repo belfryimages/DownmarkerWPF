@@ -170,33 +170,20 @@
 				<StackPanel Margin="15,0,0,0">
 					<TextBlock TextWrapping="Wrap" FontSize="26.667" Foreground="White" FontWeight="Light" Text="extensions"/>
 					<ListView ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" Height="130">
-						<ListView.Template>
-							<ControlTemplate>
-								<StackPanel Orientation="Horizontal">									
-									<TextBlock Text="{Binding Title}" />
-									<TextBlock Text="{Binding Authors}" />
-									<TextBlock Text="{Binding Description}" />
-									<TextBlock Text="Installed/Not installed" />
-								</StackPanel>
-							</ControlTemplate>
-						</ListView.Template>	
+						<ListBox.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel/>
+							</ItemsPanelTemplate>
+						</ListBox.ItemsPanel>
+						<ListView.View>
+							<GridView>
+								<GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
+								<GridViewColumn Header="Authors" DisplayMemberBinding="{Binding Authors}" />
+								<GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
+								<GridViewColumn Header="Installed"/>
+							</GridView>
+						</ListView.View>
 					</ListView>
-					<ListBox ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" Height="130">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="{Binding Title}" />
-									<TextBlock Text="{Binding Authors}" />
-									<TextBlock Text="{Binding Description}" />
-									<TextBlock Text="Installed/Not installed" />									
-								</StackPanel>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-						<ListBox.Resources>
-							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Red" Opacity=".5"/>
-							<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Red"  Opacity="0.25"/>
-						</ListBox.Resources>
-					</ListBox>
 				</StackPanel>
 			</TabItem>
         </TabControl>
