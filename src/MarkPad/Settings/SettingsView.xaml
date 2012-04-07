@@ -169,7 +169,8 @@
             <TabItem Header="extensions">
 				<StackPanel Margin="15,0,0,0">
 					<TextBlock TextWrapping="Wrap" FontSize="26.667" Foreground="White" FontWeight="Light" Text="extensions"/>
-					<ListView ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" Height="130">
+					<ListView ItemsSource="{Binding Extensions}" SelectedItem="{Binding SelectedExtension}" 
+								Height="130">
 						<ListBox.ItemsPanel>
 							<ItemsPanelTemplate>
 								<StackPanel/>
