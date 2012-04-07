@@ -25,7 +25,7 @@ namespace MarkPad
             if (args.Length == 2)
             {
                 var filePath = args[1];
-                if (File.Exists(filePath) && Constants.DefaultExtensions.Contains(Path.GetExtension(filePath).ToLower()))
+                if (File.Exists(filePath) && Constants.DefaultFileAssociations.Contains(Path.GetExtension(filePath).ToLower()))
                     bootstrapper.GetEventAggregator().Publish(new FileOpenEvent(filePath));
             }
         }

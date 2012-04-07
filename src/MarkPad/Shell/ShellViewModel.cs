@@ -99,7 +99,7 @@ namespace MarkPad.Shell
 
         public void OpenDocument()
         {
-            var path = dialogService.GetFileOpenPath("Open a markdown document.", Constants.ExtensionFilter + "|Any File (*.*)|*.*");
+            var path = dialogService.GetFileOpenPath("Open a markdown document.", Constants.FileAssociationExtensionFilter + "|Any File (*.*)|*.*");
             if (path == null)
                 return;
 
