@@ -111,7 +111,7 @@ namespace MarkPad.Document
 
         public bool SaveAs()
         {
-            var path = dialogService.GetFileSavePath("Choose a location to save the document.", "*.md", Constants.ExtensionFilter + "|All Files (*.*)|*.*");
+            var path = dialogService.GetFileSavePath("Choose a location to save the document.", "*.md", Constants.FileAssociationExtensionFilter + "|All Files (*.*)|*.*");
 
             if (string.IsNullOrEmpty(path))
                 return false;
@@ -131,7 +131,7 @@ namespace MarkPad.Document
 
             if (string.IsNullOrEmpty(filename))
             {
-                var path = dialogService.GetFileSavePath("Choose a location to save the document.", "*.md", Constants.ExtensionFilter + "|All Files (*.*)|*.*");
+                var path = dialogService.GetFileSavePath("Choose a location to save the document.", "*.md", Constants.FileAssociationExtensionFilter + "|All Files (*.*)|*.*");
 
                 if (string.IsNullOrEmpty(path))
                     return false;

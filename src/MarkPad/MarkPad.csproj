@@ -236,7 +236,7 @@
     <Compile Include="Settings\BlogSettingsViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Settings\ExtensionViewModel.cs" />
+    <Compile Include="Settings\FileAssociationViewModel.cs" />
     <Compile Include="Settings\FetchedBlogInfo.cs">
       <SubType>Code</SubType>
     </Compile>

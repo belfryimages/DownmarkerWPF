@@ -50,7 +50,7 @@
                         <StackPanel VerticalAlignment="Top" Margin="0,0,50,0">
                             <TextBlock TextWrapping="Wrap" FontSize="26.667" FontWeight="Light" Text="file extensions"/>
                             <TextBlock Text="Set Markpad as default for file extensions:" />
-                            <ItemsControl ItemsSource="{Binding Extensions}" >
+                            <ItemsControl ItemsSource="{Binding FileAssociations}" >
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <CheckBox IsChecked="{Binding Enabled}" Foreground="White" Content="{Binding Extension}" />
