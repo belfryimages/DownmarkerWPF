@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+		<id>MarkPadExtension.Example</id>
+		<version>0.1</version>
+		<authors>Code52</authors>
+		<owners>Code52</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>An example extension for MarkPad</description>
+		<tags>Example</tags>
+		<dependencies>
+		</dependencies>
+	</metadata>
+</package>

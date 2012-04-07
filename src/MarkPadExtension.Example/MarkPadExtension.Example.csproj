@@ -8,8 +8,8 @@
     <ProjectGuid>{D370081B-2956-4B59-8EBF-EEED70F1C8E5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExampleExtension</RootNamespace>
-    <AssemblyName>ExampleExtension</AssemblyName>
+    <RootNamespace>MarkPadExtension.Example</RootNamespace>
+    <AssemblyName>MarkPadExtension.Example</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
