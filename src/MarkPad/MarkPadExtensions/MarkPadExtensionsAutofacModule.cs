@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using NuGet;
+using System.IO;
 
 namespace MarkPad.MarkPadExtensions
 {
@@ -14,6 +16,20 @@ namespace MarkPad.MarkPadExtensions
 			builder
 				.RegisterType<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
 				.As<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>();
+
+			var code52PackageSource = "http://code52.org/markpad??/nuget";
+			var localPackageSource = @"C:\markpad-nuget-repository";
+            var extensionsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MarkPad", "Extensions");
+
+			// Register the nuget repositories (the Code52 one and the local dev repo):
+			builder.Register<IPackageRepository>(c => new AggregateRepository(new[] {
+				//PackageRepositoryFactory.Default.CreateRepository(code52PackageSource),
+				PackageRepositoryFactory.Default.CreateRepository(localPackageSource)
+			}));
+
+			// Register the package manager (where MarkPad's extensions are installed by NuGet):
+			builder.Register<IPackageManager>(c => new PackageManager(c.Resolve<IPackageRepository>(), extensionsFolder));
+
 
 			builder.RegisterType<MarkPadExtensionsManager>().SingleInstance();
 		}
