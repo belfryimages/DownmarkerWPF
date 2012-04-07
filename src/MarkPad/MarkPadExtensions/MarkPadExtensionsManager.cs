@@ -10,7 +10,13 @@ using System.ComponentModel.Composition;
 
 namespace MarkPad.MarkPadExtensions
 {
-	public class MarkPadExtensionsManager
+	public interface IMarkPadExtensionsManager
+	{
+		ObservableCollection<IMarkPadExtension> Extensions { get; }
+		IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions();
+	}
+
+	public class MarkPadExtensionsManager : IMarkPadExtensionsManager
 	{
 		readonly IPackageManager _packageManager;
 
@@ -43,9 +49,12 @@ namespace MarkPad.MarkPadExtensions
 		{
 		}
 
-		public IEnumerable<IPackage> GetAvailableExtensions()
+		public IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions()
 		{
-			return _packageManager.SourceRepository.GetPackages();
+			return _packageManager.SourceRepository
+				.GetPackages()
+				.AsEnumerable()
+				.Select(p => new MarkPadExtensionViewModel(p));
 		}
 	}
 }

@@ -204,6 +204,7 @@
     <Compile Include="Document\MarkPadHyperlink.cs" />
     <Compile Include="Extensions\DataImage.cs" />
     <Compile Include="Extensions\DataObjectExtensions.cs" />
+    <Compile Include="MarkPadExtensions\MarkPadExtensionViewModel.cs" />
     <Compile Include="MarkPadExtensions\MarkPadExtensionsManager.cs" />
     <Compile Include="MarkPadExtensions\MarkPadExtensionsAutofacModule.cs" />
     <Compile Include="MarkPadExtensions\IDocumentViewExtension.cs" />

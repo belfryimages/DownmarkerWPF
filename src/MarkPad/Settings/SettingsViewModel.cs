@@ -12,6 +12,7 @@ using MarkPad.Services.Implementation;
 using MarkPad.Services.Interfaces;
 using MarkPad.Services.Settings;
 using Microsoft.Win32;
+using MarkPad.MarkPadExtensions;
 
 namespace MarkPad.Settings
 {
@@ -29,6 +30,8 @@ namespace MarkPad.Settings
         public FontFamily SelectedFontFamily { get; set; }
 		public bool EnableFloatingToolBar { get; set; }
 		public bool EnableSpellCheck { get; set; }
+		public IEnumerable<MarkPadExtensionViewModel> Extensions { get; private set; }
+		public MarkPadExtensionViewModel SelectedExtension { get; set; }
 
         private const string MarkpadKeyName = "markpad.md";
 
@@ -36,17 +39,21 @@ namespace MarkPad.Settings
         private readonly IWindowManager windowManager;
         private readonly IEventAggregator eventAggregator;
         private readonly Func<BlogSettingsViewModel> blogSettingsCreator;
+		private readonly IMarkPadExtensionsManager markPadExtensionsManager;
+		
 
         public SettingsViewModel(
             ISettingsProvider settingsService,
             IWindowManager windowManager,
             IEventAggregator eventAggregator,
-            Func<BlogSettingsViewModel> blogSettingsCreator)
+            Func<BlogSettingsViewModel> blogSettingsCreator,
+			IMarkPadExtensionsManager markPadExtensionsManager)
         {
             this.settingsService = settingsService;
             this.windowManager = windowManager;
             this.eventAggregator = eventAggregator;
             this.blogSettingsCreator = blogSettingsCreator;
+			this.markPadExtensionsManager = markPadExtensionsManager;
         }
 
         public void Initialize()
@@ -81,6 +88,9 @@ namespace MarkPad.Settings
             }
 			EnableFloatingToolBar = settings.FloatingToolBarEnabled;
 			EnableSpellCheck = settings.SpellCheckEnabled;
+
+			// TODO this should be loaded async
+			Extensions = markPadExtensionsManager.GetAvailableExtensions();
         }
 
         private BlogSetting currentBlog;
