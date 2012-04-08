@@ -184,7 +184,27 @@
 								<GridViewColumn Header="Install">
 									<GridViewColumn.CellTemplate>
 										<DataTemplate>
-											<Button Content="Install" Style="{DynamicResource SquareButtonStyle}"/>
+											<Button Content="Install" Style="{DynamicResource SquareButtonStyle}"
+													IsEnabled="{Binding CanInstall}"
+													cal:Message.Attach="Install"/>
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Header="Update">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Button Content="Update" Style="{DynamicResource SquareButtonStyle}"
+													IsEnabled="{Binding CanUpdate}"
+													cal:Message.Attach="Update"/>
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Header="Uninstall">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Button Content="Uninstall" Style="{DynamicResource SquareButtonStyle}"
+													IsEnabled="{Binding CanUninstall}"
+													cal:Message.Attach="Uninstall"/>
 										</DataTemplate>
 									</GridViewColumn.CellTemplate>
 								</GridViewColumn>
