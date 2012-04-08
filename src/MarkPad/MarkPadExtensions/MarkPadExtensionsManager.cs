@@ -49,12 +49,13 @@ namespace MarkPad.MarkPadExtensions
 			//var extensions = _packageManager.PathResolver.
 			//Extensions.AddRange(
 
-			IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
+			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
 
 		}
 
 		void PackageUninstalled(object sender, PackageOperationEventArgs e)
 		{
+			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
 		}
 
 		public IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions()
