@@ -30,6 +30,14 @@ namespace MarkPad.MarkPadExtensions
 				return _package.Id;
 			}
 		}
+		public string Version
+		{
+			get
+			{
+				if (GetInstalledPackage() != null) return GetInstalledPackage().Version.ToString();
+				return _package.Version.ToString();
+			}
+		}
 		public string Authors { get { return string.Join(", ", _package.Authors); } }
 		public string Description
 		{
@@ -39,36 +47,44 @@ namespace MarkPad.MarkPadExtensions
 				return "";
 			}
 		}
-		bool IsInstalled
-		{
-			get
-			{
-				return _packageManager.LocalRepository.Exists(_package.Id);
-			}
-		}
 
-		public bool CanInstall { get { return !IsInstalled; } }
+		public bool CanInstall { get { return GetInstalledPackage() == null; } }
 		public void Install()
 		{
-			if (IsInstalled)
-			{
-				Uninstall();
-				return;
-			}
-
-			System.Windows.MessageBox.Show(this.Title);
-
 			_packageManager.InstallPackage(_package, false, false);
 			NotifyChangedInstallationStatus();
 		}
 
-		public bool CanUpdate { get { return false; } }
+		public bool CanUpdate
+		{
+			get
+			{
+				if (GetInstalledPackage() == null) return false;
+ 				return GetInstalledPackage().Version < _package.Version;
+			}
+		}
+		public string UpdateText
+		{
+			get
+			{
+				if (!CanUpdate) return "No updates";
+				return string.Format(
+					"Update to {0}",
+					_package.Version.ToString());
+			}
+		}
 		public void Update()
 		{
-			throw new NotImplementedException();
+			_packageManager.UpdatePackage(_package, true, false);
+			NotifyChangedInstallationStatus();
 		}
 
-		public bool CanUninstall { get { return IsInstalled; } }
+		IPackage GetInstalledPackage()
+		{
+			return _packageManager.LocalRepository.FindPackage(_package.Id);
+		}
+
+		public bool CanUninstall { get { return GetInstalledPackage() != null; } }
 		public void Uninstall()
 		{
 			_packageManager.UninstallPackage(_package, false, true);
@@ -80,6 +96,8 @@ namespace MarkPad.MarkPadExtensions
 			this.NotifyOfPropertyChange(() => CanInstall);
 			this.NotifyOfPropertyChange(() => CanUpdate);
 			this.NotifyOfPropertyChange(() => CanUninstall);
+			this.NotifyOfPropertyChange(() => Version);
+			this.NotifyOfPropertyChange(() => UpdateText);
 		}
 	}
 }
