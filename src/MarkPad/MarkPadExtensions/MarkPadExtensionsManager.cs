@@ -49,12 +49,6 @@ namespace MarkPad.MarkPadExtensions
 			_catalog = new AggregateCatalog(
 				new AssemblyCatalog(Assembly.GetExecutingAssembly()));
 
-			/*
-			Extensions = new ObservableCollection<IMarkPadExtension>(new[] {
-				IoC.Get<SpellCheck.SpellCheckExtension>()
-			});
-			*/
-
 			foreach (var package in _packageManager.LocalRepository.GetPackages())
 			{
 				var packagePath = Path.Combine(
@@ -65,7 +59,6 @@ namespace MarkPad.MarkPadExtensions
 
 			_container = new CompositionContainer(_catalog);
 			_container.ComposeParts(this);
-			//Extensions = _container.GetExportedValues<IMarkPadExtension>();
 		}
 
 		void PackageInstalled(object sender, PackageOperationEventArgs e)
@@ -73,8 +66,6 @@ namespace MarkPad.MarkPadExtensions
 			// Ahem. Do something with MEF here?
 
 			if (Directory.Exists(GetLibDir(e))) _catalog.Catalogs.Add(new DirectoryCatalog(GetLibDir(e)));
-
-			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
 
 			IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
 		}
