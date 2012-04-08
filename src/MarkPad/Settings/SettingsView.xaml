@@ -191,21 +191,21 @@
 										</DataTemplate>
 									</GridViewColumn.CellTemplate>
 								</GridViewColumn>
+								<GridViewColumn Header="Update">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Button Content="Update" Style="{DynamicResource SquareButtonStyle}"
+													IsEnabled="{Binding CanUpdate}"
+													cal:Message.Attach="Update"/>
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
 								<GridViewColumn Header="Uninstall">
 									<GridViewColumn.CellTemplate>
 										<DataTemplate>
 											<Button Content="Uninstall" Style="{DynamicResource SquareButtonStyle}"
 													IsEnabled="{Binding CanUninstall}"
 													cal:Message.Attach="Uninstall"/>
-										</DataTemplate>
-									</GridViewColumn.CellTemplate>
-								</GridViewColumn>
-								<GridViewColumn Header="Update">
-									<GridViewColumn.CellTemplate>
-										<DataTemplate>
-											<Button Content="{Binding UpdateText}" Style="{DynamicResource SquareButtonStyle}"
-												IsEnabled="{Binding CanUpdate}"
-												cal:Message.Attach="Update"/>
 										</DataTemplate>
 									</GridViewColumn.CellTemplate>
 								</GridViewColumn>

@@ -84,7 +84,36 @@ namespace MarkPad.MarkPadExtensions
 			return _packageManager.LocalRepository.FindPackage(_package.Id);
 		}
 
-		public bool CanUninstall { get { return GetInstalledPackage() != null; } }
+		bool IsInstalled
+		{
+			get
+			{
+				return _packageManager.LocalRepository.Exists(_package.Id);
+			}
+		}
+
+		public bool CanInstall { get { return !IsInstalled; } }
+		public void Install()
+		{
+			if (IsInstalled)
+			{
+				Uninstall();
+				return;
+			}
+
+			System.Windows.MessageBox.Show(this.Title);
+
+			_packageManager.InstallPackage(_package, false, false);
+			NotifyChangedInstallationStatus();
+		}
+
+		public bool CanUpdate { get { return false; } }
+		public void Update()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool CanUninstall { get { return IsInstalled; } }
 		public void Uninstall()
 		{
 			_packageManager.UninstallPackage(_package, false, true);
