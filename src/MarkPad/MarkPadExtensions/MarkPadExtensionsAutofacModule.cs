@@ -17,6 +17,8 @@ namespace MarkPad.MarkPadExtensions
 				.RegisterType<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
 				.As<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>();
 
+			builder.RegisterType<MarkPadExtensionViewModel>();
+
 			var code52PackageSource = "http://code52.org/markpad??/nuget";
 			var localPackageSource = @"C:\markpad-nuget-repository";
             var extensionsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MarkPad", "Extensions");

@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using MarkPad.Extensions;
 using NuGet;
 using System.ComponentModel.Composition;
+using MarkPad.Framework.Events;
 
 namespace MarkPad.MarkPadExtensions
 {
@@ -19,13 +20,17 @@ namespace MarkPad.MarkPadExtensions
 	public class MarkPadExtensionsManager : IMarkPadExtensionsManager
 	{
 		readonly IPackageManager _packageManager;
+		readonly Func<IPackage, MarkPadExtensionViewModel> _extensionViewModelCreator;
 
 		[ImportMany(AllowRecomposition=true)]
 		public ObservableCollection<IMarkPadExtension> Extensions { get; private set; }
 
-		public MarkPadExtensionsManager(IPackageManager packageManager)
+		public MarkPadExtensionsManager(
+			IPackageManager packageManager,
+			Func<IPackage, MarkPadExtensionViewModel> extensionViewModelCreator)
 		{
 			_packageManager = packageManager;
+			_extensionViewModelCreator = extensionViewModelCreator;
 
 			Extensions = new ObservableCollection<IMarkPadExtension>(new[] {
 				IoC.Get<SpellCheck.SpellCheckExtension>()
@@ -37,12 +42,15 @@ namespace MarkPad.MarkPadExtensions
 
 		void PackageInstalled(object sender, PackageOperationEventArgs e)
 		{
-			// Ahem. Do something with MEF here.
+			// Ahem. Do something with MEF here?
 
 			// The extensions need to be loaded from the package (e.Package).			
 
 			//var extensions = _packageManager.PathResolver.
 			//Extensions.AddRange(
+
+			IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
+
 		}
 
 		void PackageUninstalled(object sender, PackageOperationEventArgs e)
@@ -54,7 +62,7 @@ namespace MarkPad.MarkPadExtensions
 			return _packageManager.SourceRepository
 				.GetPackages()
 				.AsEnumerable()
-				.Select(p => new MarkPadExtensionViewModel(p));
+				.Select(p => _extensionViewModelCreator(p));
 		}
 	}
 }
