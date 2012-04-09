@@ -7,7 +7,6 @@ using MarkPad.Extensions;
 namespace MarkPadExtension.Example
 {
 	public class ExampleExtension : 
-		IMarkPadExtension,
 		ICanCreateNewPage
 	{
 		public string Name { get { return "Example extension"; } }
