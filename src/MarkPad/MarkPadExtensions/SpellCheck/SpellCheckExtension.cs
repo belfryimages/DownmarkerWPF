@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using MarkPad.Document;
 using MarkPad.Services.Interfaces;
+using System.ComponentModel.Composition;
+using MarkPad.Extensions;
 
 namespace MarkPad.MarkPadExtensions.SpellCheck
 {
-	public class SpellCheckExtension : IDocumentViewExtension
+	public class SpellCheckExtension : 
+		IDocumentViewExtension
 	{
 		public string Name { get { return "Spell check"; } }
 
@@ -14,6 +17,7 @@ namespace MarkPad.MarkPadExtensions.SpellCheck
 
 		IList<SpellCheckProvider> _providers = new List<SpellCheckProvider>();
 
+		[ImportingConstructor]
 		public SpellCheckExtension(ISpellingService spellingService)
 		{
 			_spellingService = spellingService;

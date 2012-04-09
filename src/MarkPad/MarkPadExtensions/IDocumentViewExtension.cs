@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MarkPad.Document;
 using MarkPad.Extensions;
+using System.ComponentModel.Composition;
 
 namespace MarkPad.MarkPadExtensions
 {
