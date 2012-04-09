@@ -24,6 +24,9 @@ using MarkPad.Framework.Events;
 using MarkPad.MarkPadExtensions;
 using MarkPad.Services.Settings;
 using MarkPad.XAML;
+using System.Windows.Media;
+using MarkPad.Extensions;
+using MarkPad.MarkPadExtensions;
 
 namespace MarkPad.Document
 {
