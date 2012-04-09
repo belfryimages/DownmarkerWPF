@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MarkPad.Extensions
 {
-	public interface ICanCreateNewPage
+	public interface ICanCreateNewPage : IMarkPadExtension
 	{
 		string CreateNewPageLabel { get; }
 		string CreateNewPage();

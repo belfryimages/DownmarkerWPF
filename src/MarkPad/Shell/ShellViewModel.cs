@@ -17,6 +17,7 @@ using MarkPad.Settings;
 using Ookii.Dialogs.Wpf;
 using MarkPad.Updater;
 using MarkPad.Extensions;
+using MarkPad.MarkPadExtensions;
 
 namespace MarkPad.Shell
 {
@@ -29,6 +30,7 @@ namespace MarkPad.Shell
         private readonly Func<DocumentViewModel> documentCreator;
         private readonly Func<OpenFromWebViewModel> openFromWebCreator;
 		private readonly Func<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension> spellCheckExtensionCreator;
+		private readonly IMarkPadExtensionsManager extensionsManager;
 
         public ShellViewModel(
             IDialogService dialogService,
@@ -40,7 +42,8 @@ namespace MarkPad.Shell
             UpdaterViewModel updaterViewModel,
             Func<DocumentViewModel> documentCreator,
             Func<OpenFromWebViewModel> openFromWebCreator,
-			Func<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension> spellCheckExtensionCreator)
+			Func<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension> spellCheckExtensionCreator,
+			IMarkPadExtensionsManager extensionsManager)
         {
             this.eventAggregator = eventAggregator;
             this.dialogService = dialogService;
@@ -51,6 +54,7 @@ namespace MarkPad.Shell
             this.documentCreator = documentCreator;
             this.openFromWebCreator = openFromWebCreator;
 			this.spellCheckExtensionCreator = spellCheckExtensionCreator;
+			this.extensionsManager = extensionsManager;
 
             Settings = settingsViewModel;
 			UpdateMarkPadExtensions();
@@ -342,7 +346,11 @@ namespace MarkPad.Shell
 
 		void UpdateMarkPadExtensions()
 		{
-			System.Windows.MessageBox.Show("todo: spell check setting");
+			//System.Windows.MessageBox.Show("todo: spell check setting");
+			System.Windows.MessageBox.Show("Extensions: " + extensionsManager.Extensions.Count());
+			foreach (var e in extensionsManager.Extensions) System.Windows.MessageBox.Show(e.Name);
+
+
 
 			/*
 			var settings = settingsService.GetSettings<MarkpadSettings>();
