@@ -5,6 +5,8 @@ using System.Text;
 using Autofac;
 using NuGet;
 using System.IO;
+using Autofac.Integration.Mef;
+using MarkPad.Extensions;
 
 namespace MarkPad.MarkPadExtensions
 {
@@ -15,7 +17,8 @@ namespace MarkPad.MarkPadExtensions
 			// SpellCheck should be extracted into an extension and this should be removed:
 			builder
 				.RegisterType<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
-				.As<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>();
+				.As<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
+				.Exported(b => b.As<IMarkPadExtension>());
 
 			builder.RegisterType<MarkPadExtensionViewModel>();
 
