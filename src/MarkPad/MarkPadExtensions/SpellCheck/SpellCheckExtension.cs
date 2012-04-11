@@ -4,23 +4,21 @@ using System.Linq;
 using MarkPad.Document;
 using MarkPad.Services.Interfaces;
 using System.ComponentModel.Composition;
-using MarkPad.Extensions;
+using Caliburn.Micro;
 
 namespace MarkPad.MarkPadExtensions.SpellCheck
 {
 	public class SpellCheckExtension : 
 		IDocumentViewExtension
 	{
-		public string Name { get { return "Spell check"; } }
-
-		readonly ISpellingService _spellingService;
+		readonly ISpellingService _spellingService = IoC.Get<ISpellingService>();
 
 		IList<SpellCheckProvider> _providers = new List<SpellCheckProvider>();
 
-		[ImportingConstructor]
-		public SpellCheckExtension(ISpellingService spellingService)
+		public string Name { get { return "Spell check"; } }
+
+		public SpellCheckExtension()
 		{
-			_spellingService = spellingService;
 		}
 
 		public void ConnectToDocumentView(DocumentView view)

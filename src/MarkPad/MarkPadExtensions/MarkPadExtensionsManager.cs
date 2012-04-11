@@ -44,7 +44,8 @@ namespace MarkPad.MarkPadExtensions
 		readonly Func<IPackage, MarkPadExtensionViewModel> _extensionViewModelCreator;
 
 		[ImportMany]
-		public IEnumerable<IMarkPadExtension> Extensions { get; private set; }
+		IEnumerable<IMarkPadExtension> _extensions;
+		public IEnumerable<IMarkPadExtension> Extensions { get { return _extensions; } }
 
 		AggregateCatalog _catalog;
 		CompositionContainer _container;
