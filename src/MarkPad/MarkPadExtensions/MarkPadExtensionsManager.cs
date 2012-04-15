@@ -68,19 +68,7 @@ namespace MarkPad.MarkPadExtensions
 
 			foreach (var subpath in Directory.EnumerateDirectories(GetPackagePath(package)))
 			{
-				var packagePath = Path.Combine(
-					_packageManager.PathResolver.GetInstallPath(package),
-					"lib");
-
-				if (Directory.Exists(packagePath))
-				{
-					_catalog.Catalogs.Add(new DirectoryCatalog(packagePath));
-
-					foreach (var subpath in Directory.EnumerateDirectories(packagePath))
-					{
-						_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
-					}
-				}
+				_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
 			}
 
 			_container.ComposeParts(this);
