@@ -20,24 +20,6 @@ namespace MarkPad.MarkPadExtensions
 		IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions();
 	}
 
-	public class TestExtension : ICanCreateNewPage
-	{
-		public string Name
-		{
-			get{return "TestExtension";}
-		}
-
-		public string CreateNewPageLabel
-		{
-			get { return "TestExtension Create";}
-		}
-
-		public string CreateNewPage()
-		{
-			return "# Hello!";
-		}
-	}
-
 	public class MarkPadExtensionsManager : IMarkPadExtensionsManager
 	{
 		readonly IPackageManager _packageManager;
@@ -74,7 +56,16 @@ namespace MarkPad.MarkPadExtensions
 				var packagePath = Path.Combine(
 					_packageManager.PathResolver.GetInstallPath(package),
 					"lib");
-				if (Directory.Exists(packagePath)) _catalog.Catalogs.Add(new DirectoryCatalog(packagePath));
+
+				if (Directory.Exists(packagePath))
+				{
+					_catalog.Catalogs.Add(new DirectoryCatalog(packagePath));
+
+					foreach (var subpath in Directory.EnumerateDirectories(packagePath))
+					{
+						_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
+					}
+				}
 			}
 
 			_container = new CompositionContainer(_catalog);
