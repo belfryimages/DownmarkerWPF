@@ -26,9 +26,7 @@ namespace MarkPad.MarkPadExtensions
 		readonly Func<IPackage, MarkPadExtensionViewModel> _extensionViewModelCreator;
 
 		[ImportMany]
-		IEnumerable<IMarkPadExtension> _extensions;
-		public IEnumerable<IMarkPadExtension> Extensions { get { return _extensions; } }
-
+		public IEnumerable<IMarkPadExtension> Extensions { get; private set; }
 		AggregateCatalog _catalog;
 		CompositionContainer _container;
 
@@ -39,66 +37,66 @@ namespace MarkPad.MarkPadExtensions
 			_packageManager = packageManager;
 			_extensionViewModelCreator = extensionViewModelCreator;
 
-			InitialiseCatalog();
+			_catalog = new AggregateCatalog(
+				new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+
+			foreach (var package in _packageManager.LocalRepository.GetPackages())
+			{
+				IncludePackage(package);
+			}
+
+			_container = new CompositionContainer(_catalog);
+			_container.ComposeParts(this);
 
 			_packageManager.PackageInstalled += PackageInstalled;
 			_packageManager.PackageUninstalled += PackageUninstalled;
 		}
 
-		private void InitialiseCatalog()
+		private string GetPackagePath(IPackage package)
 		{
-			_catalog = new AggregateCatalog(
-				new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+			var packagePath = Path.Combine(
+				_packageManager.PathResolver.GetInstallPath(package),
+				"lib");
+			return packagePath;
+		}
 
+		private void IncludePackage(IPackage package)
+		{
+			if (!Directory.Exists(GetPackagePath(package))) return;
+			
+			_catalog.Catalogs.Add(new DirectoryCatalog(GetPackagePath(package)));
 
-			foreach (var package in _packageManager.LocalRepository.GetPackages())
+			foreach (var subpath in Directory.EnumerateDirectories(GetPackagePath(package)))
 			{
-				var packagePath = Path.Combine(
-					_packageManager.PathResolver.GetInstallPath(package),
-					"lib");
-
-				if (Directory.Exists(packagePath))
-				{
-					_catalog.Catalogs.Add(new DirectoryCatalog(packagePath));
-
-					foreach (var subpath in Directory.EnumerateDirectories(packagePath))
-					{
-						_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
-					}
-				}
+				_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
 			}
+		}
 
-			_container = new CompositionContainer(_catalog);
-			_container.ComposeParts(this);
+		void ExcludePackage(IPackage package)
+		{
+			if (!Directory.Exists(GetPackagePath(package))) return;
+
+			_catalog.Catalogs.Remove(new DirectoryCatalog(GetPackagePath(package)));
+
+			foreach (var subpath in Directory.EnumerateDirectories(GetPackagePath(package)))
+			{
+				_catalog.Catalogs.Remove(new DirectoryCatalog(subpath));
+			}
 		}
 
 		void PackageInstalled(object sender, PackageOperationEventArgs e)
 		{
-			// Ahem. Do something with MEF here?
+			IncludePackage(e.Package);
+			
+			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
 
-			if (Directory.Exists(GetLibDir(e))) _catalog.Catalogs.Add(new DirectoryCatalog(GetLibDir(e)));
-
-			IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
 		}
 
 		void PackageUninstalled(object sender, PackageOperationEventArgs e)
 		{
-			var cleanPath = new Func<string, string>(path => path.TrimEnd(Path.DirectorySeparatorChar).ToLower());
-			var shouldRemove = new Func<dynamic, bool>(c =>
-				c is DirectoryCatalog &&
-				cleanPath((c as DirectoryCatalog).FullPath) == cleanPath(GetLibDir(e)));
-			_catalog.Catalogs.RemoveAll(c => shouldRemove(c));
+			ExcludePackage(e.Package);
 
 			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
-		}
-
-		static string GetLibDir(PackageOperationEventArgs e)
-		{
-			return Path.Combine(e.InstallPath, "lib");
-		}
-		static bool PathsMatch(IFileSystem fs, string path1, string path2)
-		{
-			return String.Equals(path1.TrimEnd(Path.DirectorySeparatorChar), path2.TrimEnd(Path.DirectorySeparatorChar), StringComparison.OrdinalIgnoreCase);
 		}
 
 		public IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions()
