@@ -25,7 +25,7 @@ namespace MarkPad.MarkPadExtensions
 		readonly IPackageManager _packageManager;
 		readonly Func<IPackage, MarkPadExtensionViewModel> _extensionViewModelCreator;
 
-		[ImportMany]
+		[ImportMany(AllowRecomposition=true)]
 		public IEnumerable<IMarkPadExtension> Extensions { get; private set; }
 		AggregateCatalog _catalog;
 		CompositionContainer _container;
@@ -39,13 +39,13 @@ namespace MarkPad.MarkPadExtensions
 
 			_catalog = new AggregateCatalog(
 				new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+			_container = new CompositionContainer(_catalog);
 
 			foreach (var package in _packageManager.LocalRepository.GetPackages())
 			{
 				IncludePackage(package);
 			}
 
-			_container = new CompositionContainer(_catalog);
 			_container.ComposeParts(this);
 
 			_packageManager.PackageInstalled += PackageInstalled;
@@ -70,18 +70,25 @@ namespace MarkPad.MarkPadExtensions
 			{
 				_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
 			}
+
+			_container.ComposeParts(this);
 		}
 
 		void ExcludePackage(IPackage package)
 		{
 			if (!Directory.Exists(GetPackagePath(package))) return;
 
-			_catalog.Catalogs.Remove(new DirectoryCatalog(GetPackagePath(package)));
-
-			foreach (var subpath in Directory.EnumerateDirectories(GetPackagePath(package)))
+			_catalog.Catalogs.RemoveAll(
+				c => c is DirectoryCatalog && 
+				((DirectoryCatalog)c).FullPath.Equals(GetPackagePath(package), StringComparison.InvariantCultureIgnoreCase));
+			foreach (var path in Directory.EnumerateDirectories(GetPackagePath(package)))
 			{
-				_catalog.Catalogs.Remove(new DirectoryCatalog(subpath));
+				_catalog.Catalogs.RemoveAll(
+					c => c is DirectoryCatalog &&
+					((DirectoryCatalog)c).FullPath.Equals(path, StringComparison.InvariantCultureIgnoreCase));
 			}
+
+			_container.ComposeParts(this);
 		}
 
 		void PackageInstalled(object sender, PackageOperationEventArgs e)
