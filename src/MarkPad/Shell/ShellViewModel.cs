@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
 using MarkPad.Document;
-using MarkPad.Framework;
 using MarkPad.Framework.Events;
 using MarkPad.MDI;
 using MarkPad.OpenFromWeb;
@@ -57,7 +56,9 @@ namespace MarkPad.Shell
 			this.extensionsManager = extensionsManager;
 
             Settings = settingsViewModel;
-			UpdateMarkPadExtensions();
+            Settings.Initialize();
+
+            UpdateMarkPadExtensions();
 
             ActivateItem(mdi);
         }
@@ -112,7 +113,7 @@ namespace MarkPad.Shell
 
         public void OpenDocument(IEnumerable<string> filenames)
         {
-			if (filenames == null) return;
+            if (filenames == null) return;
 
             foreach (var fn in filenames)
             {
@@ -170,8 +171,8 @@ namespace MarkPad.Shell
         public void ShowSettings()
         {
             CurrentState = "ShowSettings";
-            Settings.Initialize();
         }
+
         public void ToggleWebView()
         {
             var doc = MDI.ActiveItem as DocumentViewModel;
@@ -203,36 +204,6 @@ namespace MarkPad.Shell
             var openedDocs = MDI.Items.Cast<DocumentViewModel>();
 
             return openedDocs.FirstOrDefault(doc => doc != null && filename.Equals(doc.FileName));
-        }
-
-        private DocumentView GetDocument()
-        {
-            return (MDI.ActiveItem as DocumentViewModel)
-                .Evaluate(d => d.GetView() as DocumentView);
-        }
-
-        public void ToggleBold()
-        {
-            GetDocument()
-                .ExecuteSafely(v => v.ToggleBold());
-        }
-
-        public void ToggleItalic()
-        {
-            GetDocument()
-                .ExecuteSafely(v => v.ToggleItalic());
-        }
-
-        public void ToggleCode()
-        {
-            GetDocument()
-                .ExecuteSafely(v => v.ToggleCode());
-        }
-
-        public void SetHyperlink()
-        {
-            GetDocument()
-                .ExecuteSafely(v => v.SetHyperlink());
         }
 
         public void ShowHelp()
@@ -268,12 +239,12 @@ namespace MarkPad.Shell
             var blogs = settings.GetBlogs();
             if (blogs == null || blogs.Count == 0)
             {
-				if (!ConfigureNewBlog("Publish document")) 
-					return;
-				blogs = settings.GetBlogs();
-				if (blogs == null || blogs.Count == 0) 
-					return;
-			}
+                if (!ConfigureNewBlog("Publish document"))
+                    return;
+                blogs = settings.GetBlogs();
+                if (blogs == null || blogs.Count == 0)
+                    return;
+            }
 
             var doc = MDI.ActiveItem as DocumentViewModel;
             if (doc != null)
@@ -291,14 +262,14 @@ namespace MarkPad.Shell
         {
             var settings = settingsService.GetSettings<MarkPadSettings>();
             var blogs = settings.GetBlogs();
-			if (blogs == null || blogs.Count == 0)
-			{
-				if (!ConfigureNewBlog("Open from web")) 
-					return;
-				blogs = settings.GetBlogs();
-				if (blogs == null || blogs.Count == 0) 
-					return;
-			}
+            if (blogs == null || blogs.Count == 0)
+            {
+                if (!ConfigureNewBlog("Open from web"))
+                    return;
+                blogs = settings.GetBlogs();
+                if (blogs == null || blogs.Count == 0)
+                    return;
+            }
 
             var openFromWeb = openFromWebCreator();
             openFromWeb.InitializeBlogs(blogs);
@@ -328,8 +299,11 @@ namespace MarkPad.Shell
 
 			if (!setupBlog) 
 				return false;
-			if (!this.Settings.AddBlog()) 
+			if (!Settings.AddBlog()) 
 				return false;
+
+            Settings.Accept();
+
 			return true;
 		}
 
@@ -338,11 +312,10 @@ namespace MarkPad.Shell
             CurrentState = "HideSettings";
         }
 
-		public void Handle(SettingsChangedEvent message)
-		{
-			UpdateMarkPadExtensions();
-		}
-
+        public void Handle(SettingsChangedEvent message)
+        {
+            UpdateMarkPadExtensions();
+        }
 
 		void UpdateMarkPadExtensions()
 		{
@@ -359,6 +332,5 @@ namespace MarkPad.Shell
 			MarkPadExtensionsProvider.Extensions = extensions;
 			 * */
 		}
-
-	}
+    }
 }
