@@ -22,7 +22,7 @@ namespace MarkPad.MarkPadExtensions
 
 			builder.RegisterType<MarkPadExtensionViewModel>();
 
-			var code52PackageSource = "http://code52.org/markpad??/nuget";
+			//var code52PackageSource = "http://code52.org/markpad??/nuget";
 			var localPackageSource = @"C:\markpad-nuget-repository";
             var extensionsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MarkPad", "Extensions");
 

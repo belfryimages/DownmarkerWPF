@@ -1,5 +1,5 @@
 ﻿using MarkPad.Document;
-using MarkPad.Services.MarkPadExtensions;
+using MarkPad.Extensions;
 
 namespace MarkPad.MarkPadExtensions
 {

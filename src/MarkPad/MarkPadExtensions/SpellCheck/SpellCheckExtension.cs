@@ -16,9 +16,10 @@ namespace MarkPad.MarkPadExtensions.SpellCheck
 
         readonly IList<SpellCheckProvider> providers = new List<SpellCheckProvider>();
 
-        public SpellCheckExtension(ISpellingService spellingService)
+        public SpellCheckExtension()//ISpellingService spellingService)
         {
-            this.spellingService = spellingService;
+			this.spellingService = IoC.Get<ISpellingService>();
+				//spellingService;
         }
 
         public void ConnectToDocumentView(DocumentView view)

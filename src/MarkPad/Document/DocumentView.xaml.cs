@@ -15,9 +15,7 @@ using MarkPad.Framework.Events;
 using MarkPad.MarkPadExtensions;
 using MarkPad.Services.Settings;
 using MarkPad.XAML;
-using System.Windows.Media;
 using MarkPad.Extensions;
-using MarkPad.MarkPadExtensions;
 
 namespace MarkPad.Document
 {
@@ -27,29 +25,18 @@ namespace MarkPad.Document
         private const string LocalRequestUrlBase = "local://base_request.html/";
 
         private ScrollViewer documentScrollViewer;
-<<<<<<< HEAD
 		private readonly IList<IDocumentViewExtension> extensions = new List<IDocumentViewExtension>();
 		private readonly ISettingsProvider settingsProvider;
 		private readonly IMarkPadExtensionsManager _markPadExtensionsManager;
-=======
-        private readonly IList<IDocumentViewExtension> extensions = new List<IDocumentViewExtension>();
-        private readonly ISettingsProvider settingsProvider;
->>>>>>> 104df9248b5526d5aeb081d94002cc0942ed08ec
 
         MarkPadSettings settings;
 
-<<<<<<< HEAD
 		public DocumentView(
 			ISettingsProvider settingsProvider,
 			IMarkPadExtensionsManager markPadExtensionsManager)
         {
 			this.settingsProvider = settingsProvider;
 			_markPadExtensionsManager = markPadExtensionsManager;
-=======
-        public DocumentView(ISettingsProvider settingsProvider)
-        {
-            this.settingsProvider = settingsProvider;
->>>>>>> 104df9248b5526d5aeb081d94002cc0942ed08ec
 
             InitializeComponent();
 
@@ -68,84 +55,7 @@ namespace MarkPad.Document
             CommandBindings.Add(new CommandBinding(DisplayCommands.ZoomReset, (x, y) => ZoomReset()));
         }
 
-<<<<<<< HEAD
-		private void ApplyZoom()
-		{
-			Editor.TextArea.TextView.Redraw();
-
-			var zoom = ZoomSlider.Value;
-			
-			var fontSize = GetFontSize() * zoom;
-
-			Editor.FontSize = fontSize;
-			wb.Zoom = GetZoomLevel(fontSize);
-		}
-
-		private void ZoomIn()
-		{
-			AdjustZoom(ZoomDelta);
-		}
-
-		private void ZoomOut()
-		{
-			AdjustZoom(-ZoomDelta);
-		}
-
-		private void AdjustZoom(double delta)
-		{
-			var newZoom = ZoomSlider.Value + delta;
-
-			if (newZoom < ZoomSlider.Minimum) newZoom = ZoomSlider.Minimum;
-			if (newZoom > ZoomSlider.Maximum) newZoom = ZoomSlider.Maximum;
-
-			ZoomSlider.Value = newZoom;
-		}
-
-		private void ZoomReset()
-		{
-			ZoomSlider.Value = 1;
-		}
-
-		protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
-		{
-			base.OnPreviewMouseWheel(e);
-			
-			if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl)) return;
-
-			e.Handled = true;
-
-			if (e.Delta > 0) ZoomIn();
-			else ZoomOut();
-		}
-
-		private void ApplyFont()
-		{
-			Editor.FontFamily = GetFontFamily();
-		}
-
-		private void ApplyExtensions()
-		{
-			var extensions = _markPadExtensionsManager.Extensions.OfType<IDocumentViewExtension>();
-			var extensionsToAdd = extensions.Except(this.extensions).ToList();
-			var extensionsToRemove = this.extensions.Except(extensions).ToList();
-
-			foreach (var extension in extensionsToAdd)
-			{
-				extension.ConnectToDocumentView(this);
-				this.extensions.Add(extension);
-			}
-
-			foreach (var extension in extensionsToRemove)
-			{
-				extension.DisconnectFromDocumentView(this);
-				this.extensions.Remove(extension);
-			}
-		}
-
-        void WebControl_LinkClicked(object sender, OpenExternalLinkEventArgs e)
-=======
         public TextEditor Editor
->>>>>>> 104df9248b5526d5aeb081d94002cc0942ed08ec
         {
             get { return markdownEditor.Editor; }
         }
@@ -212,7 +122,7 @@ namespace MarkPad.Document
 
         private void ApplyExtensions()
         {
-            var allExtensions = MarkPadExtensionsProvider.Extensions.OfType<IDocumentViewExtension>().ToList();
+			var allExtensions = _markPadExtensionsManager.Extensions.OfType<IDocumentViewExtension>().ToList();
             var extensionsToAdd = allExtensions.Except(extensions).ToList();
             var extensionsToRemove = extensions.Except(allExtensions).ToList();
 
