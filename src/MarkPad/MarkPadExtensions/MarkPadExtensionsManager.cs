@@ -25,6 +25,7 @@ namespace MarkPad.MarkPadExtensions
 	{
 		readonly IPackageManager _packageManager;
 		readonly Func<IPackage, MarkPadExtensionViewModel> _extensionViewModelCreator;
+		readonly IEventAggregator _eventAggregator;
 
 		[ImportMany(AllowRecomposition=true)]
 		public IEnumerable<IMarkPadExtension> Extensions { get; private set; }
@@ -33,10 +34,12 @@ namespace MarkPad.MarkPadExtensions
 
 		public MarkPadExtensionsManager(
 			IPackageManager packageManager,
-			Func<IPackage, MarkPadExtensionViewModel> extensionViewModelCreator)
+			Func<IPackage, MarkPadExtensionViewModel> extensionViewModelCreator,
+			IEventAggregator eventAggregator)
 		{
 			_packageManager = packageManager;
 			_extensionViewModelCreator = extensionViewModelCreator;
+			_eventAggregator = eventAggregator;
 
 			_catalog = new AggregateCatalog(
 				new AssemblyCatalog(Assembly.GetExecutingAssembly()));
@@ -96,14 +99,14 @@ namespace MarkPad.MarkPadExtensions
 		{
 			IncludePackage(e.Package);
 			
-			IoC.Get<IEventAggregator>().Publish(new ExtensionsChangedEvent());
+			_eventAggregator.Publish(new ExtensionsChangedEvent());
 		}
 
 		void PackageUninstalled(object sender, PackageOperationEventArgs e)
 		{
 			ExcludePackage(e.Package);
 
-			IoC.Get<IEventAggregator>().Publish(new ExtensionsChangedEvent());
+			_eventAggregator.Publish(new ExtensionsChangedEvent());
 		}
 
 		public IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions()

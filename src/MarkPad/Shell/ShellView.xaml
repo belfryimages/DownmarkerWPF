@@ -345,7 +345,12 @@
                 </WrapPanel.RenderTransform>
                 <Button x:Name="NewDocument" Content="BLANK PAGE" />
     			<Button x:Name="NewJekyllDocument" Content="JEKYLL PAGE" />
-    		</WrapPanel>
+				<WrapPanel x:Name="newPageHook" Margin="0,0,0,0">
+					<Button x:Name="NewJekyllDocumen2t" Content="JEKYLL PAGE" />
+					<Button x:Name="NewJekyllDocumen3t" Content="JEKYLL PAGE" />
+					
+				</WrapPanel>
+			</WrapPanel>
     		<WrapPanel x:Name="saveItems" Visibility="Collapsed" Opacity="0" Margin="30,0,0,0" VerticalAlignment="Bottom" Height="20" RenderTransformOrigin="0.5,0.5" d:LayoutOverrides="VerticalAlignment, GridBox">
     			<WrapPanel.Resources>
     				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource ChromelessButtonStyle}">

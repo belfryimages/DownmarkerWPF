@@ -4,20 +4,24 @@ using System.Linq;
 using System.Text;
 using NuGet;
 using Caliburn.Micro;
+using MarkPad.Framework.Events;
 
 namespace MarkPad.MarkPadExtensions
 {
 	public class MarkPadExtensionViewModel : PropertyChangedBase
 	{
 		readonly IPackageManager _packageManager;
+		readonly IEventAggregator _eventAggregator;
 
 		IPackage _package;
 
 		public MarkPadExtensionViewModel(
 			IPackageManager packageManager,
+			IEventAggregator eventAggregator,
 			IPackage package)
 		{
 			_packageManager = packageManager;
+			_eventAggregator = eventAggregator;
 
 			_package = package;
 		}
@@ -76,6 +80,7 @@ namespace MarkPad.MarkPadExtensions
 		public void Update()
 		{
 			_packageManager.UpdatePackage(_package, true, false);
+			_eventAggregator.Publish(new ExtensionsChangedEvent());
 			NotifyChangedInstallationStatus();
 		}
 

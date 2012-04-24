@@ -3,7 +3,7 @@
 	<metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 		<id>Example</id>
 		<title>Example extension</title>
-		<version>0.1.1</version>
+		<version>0.1.7</version>
 		<authors>Code52</authors>
 		<owners>Code52</owners>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>

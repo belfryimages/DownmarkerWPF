@@ -11,11 +11,11 @@ namespace Extension.Example
 	{
 		public string Name { get { return "Example extension"; } }
 
-		public string CreateNewPageLabel { get { return "Example - New page"; } }
+		public string CreateNewPageLabel { get { return "New example extension page"; } }
 
 		public string CreateNewPage()
 		{
-			return "# Hello from ExampleExtension";
+			return "# Hello from the `Example` extension TEST 2";
 		}
 	}
 }

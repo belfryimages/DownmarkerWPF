@@ -1,16 +1,34 @@
 using System.Windows;
 using System.Windows.Input;
+using MarkPad.Framework.Events;
+using Caliburn.Micro;
+using System.ComponentModel.Composition;
+using System.Collections.Generic;
+using MarkPad.Extensions;
+using MarkPad.MarkPadExtensions;
+using System.Windows.Controls;
+using MarkPad.Framework;
 
 namespace MarkPad.Shell
 {
-    public partial class ShellView
+    public partial class ShellView : IHandle<ExtensionsChangedEvent>
     {
-        public ShellView()
-        {
-            InitializeComponent();
-        }
+		readonly IMarkPadExtensionsManager markPadExtensionsManager;
 
         private bool ignoreNextMouseMove;
+		[ImportMany(AllowRecomposition = true)]
+		private IEnumerable<ICanCreateNewPage> newPageCreators;
+
+		public ShellView(IMarkPadExtensionsManager markPadExtensionsManager)
+		{
+			this.markPadExtensionsManager = markPadExtensionsManager;
+
+			InitializeComponent();
+
+			this.markPadExtensionsManager.Container.ComposeParts(this);
+
+			Handle(new ExtensionsChangedEvent());
+		}
 
         private void DragMoveWindow(object sender, MouseButtonEventArgs e)
         {
@@ -99,5 +117,33 @@ namespace MarkPad.Shell
             e.Effects = isFileDrop ? DragDropEffects.Move : DragDropEffects.None;
             e.Handled = true;
         }
+
+		public void Handle(ExtensionsChangedEvent e)
+		{
+			this.markPadExtensionsManager.Container.ComposeParts(this);
+
+			newPageHook.Children.Clear();
+			foreach (var creator in newPageCreators)
+			{
+				var button = new Button
+				{
+					Content = creator.CreateNewPageLabel.ToUpper(),
+					Tag = creator
+				};
+				button.Click += newPageHookButtonClick;
+				newPageHook.Children.Add(button);
+			}
+		}
+
+		void newPageHookButtonClick(object sender, RoutedEventArgs e)
+		{
+			var button = (Button)e.Source;
+			var creator = (ICanCreateNewPage)button.Tag;
+			var viewModel = DataContext as ShellViewModel;
+
+			var text = creator.CreateNewPage();
+
+			viewModel.ExecuteSafely(vm => vm.NewDocument(text));
+		}
     }
 }
