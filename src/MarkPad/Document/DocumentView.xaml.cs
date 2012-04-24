@@ -16,29 +16,34 @@ using MarkPad.MarkPadExtensions;
 using MarkPad.Services.Settings;
 using MarkPad.XAML;
 using MarkPad.Extensions;
+using System.ComponentModel.Composition;
 
 namespace MarkPad.Document
 {
-    public partial class DocumentView : IHandle<SettingsChangedEvent>
+    public partial class DocumentView : IHandle<SettingsChangedEvent>, IHandle<ExtensionsChangedEvent>
     {
         private const double ZoomDelta = 0.1;
         private const string LocalRequestUrlBase = "local://base_request.html/";
 
         private ScrollViewer documentScrollViewer;
-		private readonly IList<IDocumentViewExtension> extensions = new List<IDocumentViewExtension>();
 		private readonly ISettingsProvider settingsProvider;
-		private readonly IMarkPadExtensionsManager _markPadExtensionsManager;
+		private readonly IMarkPadExtensionsManager markPadExtensionsManager;
 
-        MarkPadSettings settings;
+        private MarkPadSettings settings;
+		[ImportMany(AllowRecomposition = true)]
+		private IEnumerable<IDocumentViewExtension> extensions;
+		private IEnumerable<IDocumentViewExtension> appliedExtensions = new IDocumentViewExtension[0];
 
 		public DocumentView(
 			ISettingsProvider settingsProvider,
 			IMarkPadExtensionsManager markPadExtensionsManager)
         {
 			this.settingsProvider = settingsProvider;
-			_markPadExtensionsManager = markPadExtensionsManager;
+			this.markPadExtensionsManager = markPadExtensionsManager;
 
             InitializeComponent();
+
+			this.markPadExtensionsManager.Container.ComposeParts(this);
 
             Loaded += DocumentViewLoaded;
             wb.Loaded += WbLoaded;
@@ -49,6 +54,7 @@ namespace MarkPad.Document
             markdownEditor.Editor.MouseWheel += HandleEditorMouseWheel;
 
             Handle(new SettingsChangedEvent());
+			Handle(new ExtensionsChangedEvent());
 
             CommandBindings.Add(new CommandBinding(DisplayCommands.ZoomIn, (x, y) => ZoomIn()));
             CommandBindings.Add(new CommandBinding(DisplayCommands.ZoomOut, (x, y) => ZoomOut()));
@@ -122,21 +128,17 @@ namespace MarkPad.Document
 
         private void ApplyExtensions()
         {
-			var allExtensions = _markPadExtensionsManager.Extensions.OfType<IDocumentViewExtension>().ToList();
-            var extensionsToAdd = allExtensions.Except(extensions).ToList();
-            var extensionsToRemove = extensions.Except(allExtensions).ToList();
+			foreach (var extension in appliedExtensions.Except(extensions))
+			{
+				extension.DisconnectFromDocumentView(this);
+			}
 
-            foreach (var extension in extensionsToAdd)
-            {
-                extension.ConnectToDocumentView(this);
-                extensions.Add(extension);
-            }
+			foreach (var extension in extensions.Except(appliedExtensions))
+			{
+				extension.ConnectToDocumentView(this);
+			}
 
-            foreach (var extension in extensionsToRemove)
-            {
-                extension.DisconnectFromDocumentView(this);
-                extensions.Remove(extension);
-            }
+			appliedExtensions = new List<IDocumentViewExtension>(extensions);
         }
 
         void WebControlLinkClicked(object sender, OpenExternalLinkEventArgs e)
@@ -272,7 +274,11 @@ namespace MarkPad.Document
 
             ApplyFont();
             ApplyZoom();
-            ApplyExtensions();
         }
+
+		public void Handle(ExtensionsChangedEvent e)
+		{
+            ApplyExtensions();
+		}
     }
 }

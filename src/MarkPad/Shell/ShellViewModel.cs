@@ -314,14 +314,19 @@ namespace MarkPad.Shell
 
         public void Handle(SettingsChangedEvent message)
         {
-            UpdateMarkPadExtensions();
         }
+
+		public void Handle(ExtensionsChangedEvent e)
+		{
+		}
+		
 
 		void UpdateMarkPadExtensions()
 		{
+			/*
 			System.Windows.MessageBox.Show("Extensions: " + extensionsManager.Extensions.Count());
 			foreach (var e in extensionsManager.Extensions) System.Windows.MessageBox.Show(e.Name);
-
+			*/
 			/*
 			var extensions = new List<IMarkPadExtension>();
 			if (settings.SpellCheckEnabled)

@@ -16,6 +16,7 @@ namespace MarkPad.MarkPadExtensions
 {
 	public interface IMarkPadExtensionsManager
 	{
+		CompositionContainer Container { get; }
 		IEnumerable<IMarkPadExtension> Extensions { get; }
 		IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions();
 	}
@@ -28,7 +29,7 @@ namespace MarkPad.MarkPadExtensions
 		[ImportMany(AllowRecomposition=true)]
 		public IEnumerable<IMarkPadExtension> Extensions { get; private set; }
 		AggregateCatalog _catalog;
-		CompositionContainer _container;
+		public CompositionContainer Container { get; private set; }
 
 		public MarkPadExtensionsManager(
 			IPackageManager packageManager,
@@ -39,14 +40,14 @@ namespace MarkPad.MarkPadExtensions
 
 			_catalog = new AggregateCatalog(
 				new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-			_container = new CompositionContainer(_catalog);
+			Container = new CompositionContainer(_catalog);
 
 			foreach (var package in _packageManager.LocalRepository.GetPackages())
 			{
 				IncludePackage(package);
 			}
 
-			_container.ComposeParts(this);
+			Container.ComposeParts(this);
 
 			_packageManager.PackageInstalled += PackageInstalled;
 			_packageManager.PackageUninstalled += PackageUninstalled;
@@ -71,7 +72,7 @@ namespace MarkPad.MarkPadExtensions
 				_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
 			}
 
-			_container.ComposeParts(this);
+			Container.ComposeParts(this);
 		}
 
 		void ExcludePackage(IPackage package)
@@ -88,14 +89,14 @@ namespace MarkPad.MarkPadExtensions
 					((DirectoryCatalog)c).FullPath.Equals(path, StringComparison.InvariantCultureIgnoreCase));
 			}
 
-			_container.ComposeParts(this);
+			Container.ComposeParts(this);
 		}
 
 		void PackageInstalled(object sender, PackageOperationEventArgs e)
 		{
 			IncludePackage(e.Package);
 			
-			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
+			IoC.Get<IEventAggregator>().Publish(new ExtensionsChangedEvent());
 
 		}
 
@@ -103,7 +104,7 @@ namespace MarkPad.MarkPadExtensions
 		{
 			ExcludePackage(e.Package);
 
-			//IoC.Get<IEventAggregator>().Publish(new SettingsChangedEvent());
+			IoC.Get<IEventAggregator>().Publish(new ExtensionsChangedEvent());
 		}
 
 		public IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions()
