@@ -44,8 +44,5 @@ namespace MarkPad.Services.Settings
 
 		[DefaultValue(true)]
 		public bool FloatingToolBarEnabled { get; set; }
-
-		[DefaultValue(true)]
-		public bool SpellCheckEnabled { get; set; }
     }
 }

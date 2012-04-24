@@ -30,7 +30,6 @@ namespace MarkPad.Settings
         public FontSizes SelectedFontSize { get; set; }
         public FontFamily SelectedFontFamily { get; set; }
 		public bool EnableFloatingToolBar { get; set; }
-		public bool EnableSpellCheck { get; set; }
 		public IEnumerable<MarkPadExtensionViewModel> Extensions { get; private set; }
 		public MarkPadExtensionViewModel SelectedExtension { get; set; }
 
@@ -88,7 +87,6 @@ namespace MarkPad.Settings
                 SelectedFontSize = Constants.DEFAULT_EDITOR_FONT_SIZE;
             }
 			EnableFloatingToolBar = settings.FloatingToolBarEnabled;
-			EnableSpellCheck = settings.SpellCheckEnabled;
 
 			// TODO this should be loaded async
 			Extensions = markPadExtensionsManager.GetAvailableExtensions();
@@ -204,7 +202,6 @@ namespace MarkPad.Settings
             settings.FontSize = SelectedFontSize;
             settings.FontFamily = SelectedFontFamily.Source;
 			settings.FloatingToolBarEnabled = EnableFloatingToolBar;
-			settings.SpellCheckEnabled = EnableSpellCheck;
 			
             settingsService.SaveSettings(settings);
 

@@ -16,7 +16,7 @@ _Resharper*
 msbuild.log
 *.cache
 artifacts/
-*Example*.nupkg
+src/*.nupkg
 *.sln.docstates
 
 # Build results
