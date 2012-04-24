@@ -96,7 +96,6 @@
     <Compile Include="Interfaces\IMetaWeblogService.cs" />
     <Compile Include="Interfaces\ISiteContext.cs" />
     <Compile Include="Interfaces\ISiteContextGenerator.cs" />
-    <Compile Include="Interfaces\ISpellingService.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\ITaskSchedulerFactory.cs" />
     <Compile Include="Metaweblog\Category.cs" />
@@ -125,6 +124,10 @@
     <Compile Include="Settings\SettingsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MarkPad.Extensions\MarkPad.Extensions.csproj">
+      <Project>{0BF56AF2-85EB-4397-87CA-D414C6FDC5A3}</Project>
+      <Name>MarkPad.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MarkPad.XAML\MarkPad.XAML.csproj">
       <Project>{F5C76E3F-AC91-477D-86DE-778850F3E14B}</Project>
       <Name>MarkPad.XAML</Name>

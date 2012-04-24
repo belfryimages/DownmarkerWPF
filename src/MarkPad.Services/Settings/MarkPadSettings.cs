@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using MarkPad.Services.Implementation;
 using MarkPad.Services.Interfaces;
+using MarkPad.Extensions;
 
 namespace MarkPad.Services.Settings
 {

@@ -14,12 +14,6 @@ namespace MarkPad.MarkPadExtensions
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			// SpellCheck should be extracted into an extension and this should be removed:
-			builder
-				.RegisterType<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
-				.As<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension>()
-				.Exported(b => b.As<IMarkPadExtension>());
-
 			builder.RegisterType<MarkPadExtensionViewModel>();
 
 			// Register the nuget repositories (the Code52 one and the local dev repo):

@@ -7,6 +7,7 @@ using MarkPad.Services.Implementation;
 using MarkPad.Services.Interfaces;
 using MarkPad.Services.Settings;
 using MarkPad.MarkPadExtensions;
+using MarkPad.Extensions;
 
 namespace MarkPad
 {

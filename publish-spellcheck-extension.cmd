@@ -8,13 +8,13 @@ echo Creating local repository
 mkdir %repo%
 
 echo Clearing existing packages
-del Example.*.nupkg
-del %repo%\Example.*.nupkg
+del SpellCheck.*.nupkg
+del %repo%\SpellCheck.*.nupkg
 
-echo Packing example extension
-.nuget\nuget pack Extensions\Example\Example.csproj
+echo Packing SpellCheck extension
+.nuget\nuget pack Extensions\SpellCheck\SpellCheck.csproj
 
 echo Publishing to local repository
-copy Example.*.nupkg %repo%
+copy SpellCheck.*.nupkg %repo%
 
 cd ..

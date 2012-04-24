@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using MarkPad.Services.Interfaces;
 using NHunspell;
+using MarkPad.Extensions;
 
 namespace MarkPad.Services.Implementation
 {

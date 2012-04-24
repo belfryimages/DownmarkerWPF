@@ -13,6 +13,7 @@ using MarkPad.Services.Interfaces;
 using MarkPad.Services.Settings;
 using Microsoft.Win32;
 using MarkPad.MarkPadExtensions;
+using MarkPad.Extensions;
 
 namespace MarkPad.Settings
 {

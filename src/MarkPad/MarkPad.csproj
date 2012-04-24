@@ -214,8 +214,6 @@
     <Compile Include="MarkPadExtensions\MarkPadExtensionViewModel.cs" />
     <Compile Include="MarkPadExtensions\MarkPadExtensionsManager.cs" />
     <Compile Include="MarkPadExtensions\MarkPadExtensionsAutofacModule.cs" />
-    <Compile Include="MarkPadExtensions\IDocumentViewExtension.cs" />
-    <Compile Include="MarkPadExtensions\SpellCheck\SpellCheckExtension.cs" />
     <Compile Include="Framework\Events\SettingsChangedEvent.cs" />
     <Compile Include="Framework\FocusExtension.cs" />
     <Compile Include="Framework\FontHelpers.cs" />

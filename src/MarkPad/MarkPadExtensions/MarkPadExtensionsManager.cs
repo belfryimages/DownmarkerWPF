@@ -97,7 +97,6 @@ namespace MarkPad.MarkPadExtensions
 			IncludePackage(e.Package);
 			
 			IoC.Get<IEventAggregator>().Publish(new ExtensionsChangedEvent());
-
 		}
 
 		void PackageUninstalled(object sender, PackageOperationEventArgs e)

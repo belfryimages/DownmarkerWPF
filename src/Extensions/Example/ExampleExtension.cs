@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using MarkPad.Extensions;
 
-namespace MarkPadExtension.Example
+namespace Extension.Example
 {
 	public class ExampleExtension : 
 		ICanCreateNewPage

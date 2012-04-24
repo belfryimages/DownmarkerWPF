@@ -28,7 +28,6 @@ namespace MarkPad.Shell
         private readonly ISettingsProvider settingsService;
         private readonly Func<DocumentViewModel> documentCreator;
         private readonly Func<OpenFromWebViewModel> openFromWebCreator;
-		private readonly Func<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension> spellCheckExtensionCreator;
 		private readonly IMarkPadExtensionsManager extensionsManager;
 
         public ShellViewModel(
@@ -41,7 +40,6 @@ namespace MarkPad.Shell
             UpdaterViewModel updaterViewModel,
             Func<DocumentViewModel> documentCreator,
             Func<OpenFromWebViewModel> openFromWebCreator,
-			Func<MarkPad.MarkPadExtensions.SpellCheck.SpellCheckExtension> spellCheckExtensionCreator,
 			IMarkPadExtensionsManager extensionsManager)
         {
             this.eventAggregator = eventAggregator;
@@ -52,7 +50,6 @@ namespace MarkPad.Shell
             Updater = updaterViewModel;
             this.documentCreator = documentCreator;
             this.openFromWebCreator = openFromWebCreator;
-			this.spellCheckExtensionCreator = spellCheckExtensionCreator;
 			this.extensionsManager = extensionsManager;
 
             Settings = settingsViewModel;

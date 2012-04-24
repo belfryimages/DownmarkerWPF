@@ -20,7 +20,10 @@ using System.ComponentModel.Composition;
 
 namespace MarkPad.Document
 {
-    public partial class DocumentView : IHandle<SettingsChangedEvent>, IHandle<ExtensionsChangedEvent>
+    public partial class DocumentView : 
+		IDocumentView,
+		IHandle<SettingsChangedEvent>, 
+		IHandle<ExtensionsChangedEvent>
     {
         private const double ZoomDelta = 0.1;
         private const string LocalRequestUrlBase = "local://base_request.html/";
@@ -135,6 +138,21 @@ namespace MarkPad.Document
 
 			foreach (var extension in extensions.Except(appliedExtensions))
 			{
+				// No IOC for extensions, so have to plug this in manually...
+				if (extension is ISpellCheckExtension)
+				{
+					var spellCheckExtension = extension as ISpellCheckExtension;
+					spellCheckExtension.SpellingService = IoC.Get<ISpellingService>();
+					spellCheckExtension.SpellCheckProviderFactory = new Func<ISpellingService, IDocumentView, ISpellCheckProvider>(
+						(spellingService, documentView) =>
+						{
+							var view = (DocumentView)documentView;
+							return new MarkPad.MarkPadExtensions.SpellCheck.SpellCheckProvider(
+								spellingService,
+								view);
+						});
+				}
+
 				extension.ConnectToDocumentView(this);
 			}
 
