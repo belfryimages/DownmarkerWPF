@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MarkPad.Extensions;
+using MarkPad.Extensions.Host;
 
 namespace SpellCheck
 {
@@ -15,7 +16,10 @@ namespace SpellCheck
 
         public void ConnectToDocumentView(IDocumentView view)
         {
-            if (providers.Any(p => p.View == view)) throw new ArgumentException("View already has a spell check provider connected", "view");
+			if (providers.Any(p => p.View == view))
+			{
+				throw new ArgumentException("View already has a spell check provider connected", "view");
+			}
 
 			var provider = SpellCheckProviderFactory(SpellingService, view);
             providers.Add(provider);

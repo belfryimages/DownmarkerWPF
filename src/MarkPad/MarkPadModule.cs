@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Autofac;
 using NuGet;
 using System.IO;
-using Autofac.Integration.Mef;
-using MarkPad.Extensions;
+using MarkPad.MarkPadExtensions;
+using MarkPad.Settings;
 
-namespace MarkPad.MarkPadExtensions
+namespace MarkPad
 {
-	public class MarkPadExtensionsAutofacModule : Module
+	public class MarkPadModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<MarkPadExtensionViewModel>();
-
-			// Register the nuget repositories (the Code52 one and the local dev repo):
+			// Register local and Code52 (not yet) NuGet repositories
 			//var code52PackageSource = "http://code52.org/markpad??/nuget";
 			var localPackageSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MarkPad", "Packages");
 			builder.Register<IPackageRepository>(c => new AggregateRepository(new[] {
@@ -28,6 +23,7 @@ namespace MarkPad.MarkPadExtensions
             var extensionsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MarkPad", "Extensions");
 			builder.Register<IPackageManager>(c => new PackageManager(c.Resolve<IPackageRepository>(), extensionsFolder)).SingleInstance();
 
+			builder.RegisterType<MarkPadExtensionViewModel>();
 			builder.RegisterType<MarkPadExtensionsManager>().As<IMarkPadExtensionsManager>().SingleInstance();
 		}
 	}

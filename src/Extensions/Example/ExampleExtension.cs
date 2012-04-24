@@ -15,7 +15,7 @@ namespace Extension.Example
 
 		public string CreateNewPage()
 		{
-			return "# Hello from the `Example` extension TEST 2";
+			return "# Hello from the `Example` extension";
 		}
 	}
 }

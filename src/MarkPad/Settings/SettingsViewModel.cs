@@ -14,6 +14,7 @@ using MarkPad.Services.Settings;
 using Microsoft.Win32;
 using MarkPad.MarkPadExtensions;
 using MarkPad.Extensions;
+using MarkPad.Extensions.Host;
 
 namespace MarkPad.Settings
 {

@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using MarkPad.Extensions;
 using NuGet;
-using System.ComponentModel.Composition;
 using MarkPad.Framework.Events;
 using System.IO;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
+using MarkPad.Settings;
 
 namespace MarkPad.MarkPadExtensions
 {
 	public interface IMarkPadExtensionsManager
 	{
 		CompositionContainer Container { get; }
-		IEnumerable<IMarkPadExtension> Extensions { get; }
 		IEnumerable<MarkPadExtensionViewModel> GetAvailableExtensions();
 	}
 
@@ -27,8 +23,6 @@ namespace MarkPad.MarkPadExtensions
 		readonly Func<IPackage, MarkPadExtensionViewModel> _extensionViewModelCreator;
 		readonly IEventAggregator _eventAggregator;
 
-		[ImportMany(AllowRecomposition=true)]
-		public IEnumerable<IMarkPadExtension> Extensions { get; private set; }
 		AggregateCatalog _catalog;
 		public CompositionContainer Container { get; private set; }
 
@@ -49,8 +43,6 @@ namespace MarkPad.MarkPadExtensions
 			{
 				IncludePackage(package);
 			}
-
-			Container.ComposeParts(this);
 
 			_packageManager.PackageInstalled += PackageInstalled;
 			_packageManager.PackageUninstalled += PackageUninstalled;
@@ -74,8 +66,6 @@ namespace MarkPad.MarkPadExtensions
 			{
 				_catalog.Catalogs.Add(new DirectoryCatalog(subpath));
 			}
-
-			Container.ComposeParts(this);
 		}
 
 		void ExcludePackage(IPackage package)
@@ -91,8 +81,6 @@ namespace MarkPad.MarkPadExtensions
 					c => c is DirectoryCatalog &&
 					((DirectoryCatalog)c).FullPath.Equals(path, StringComparison.InvariantCultureIgnoreCase));
 			}
-
-			Container.ComposeParts(this);
 		}
 
 		void PackageInstalled(object sender, PackageOperationEventArgs e)

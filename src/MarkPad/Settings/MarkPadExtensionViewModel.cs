@@ -6,7 +6,7 @@ using NuGet;
 using Caliburn.Micro;
 using MarkPad.Framework.Events;
 
-namespace MarkPad.MarkPadExtensions
+namespace MarkPad.Settings
 {
 	public class MarkPadExtensionViewModel : PropertyChangedBase
 	{

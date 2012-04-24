@@ -211,9 +211,9 @@
     <Compile Include="Extensions\DataImage.cs" />
     <Compile Include="Extensions\DataObjectExtensions.cs" />
     <Compile Include="Framework\Events\ExtensionsChangedEvent.cs" />
-    <Compile Include="MarkPadExtensions\MarkPadExtensionViewModel.cs" />
+    <Compile Include="Settings\MarkPadExtensionViewModel.cs" />
     <Compile Include="MarkPadExtensions\MarkPadExtensionsManager.cs" />
-    <Compile Include="MarkPadExtensions\MarkPadExtensionsAutofacModule.cs" />
+    <Compile Include="MarkPadModule.cs" />
     <Compile Include="Framework\Events\SettingsChangedEvent.cs" />
     <Compile Include="Framework\FocusExtension.cs" />
     <Compile Include="Framework\FontHelpers.cs" />

@@ -6,6 +6,7 @@ using System.Reflection;
 using MarkPad.Services.Interfaces;
 using NHunspell;
 using MarkPad.Extensions;
+using MarkPad.Extensions.Host;
 
 namespace MarkPad.Services.Implementation
 {

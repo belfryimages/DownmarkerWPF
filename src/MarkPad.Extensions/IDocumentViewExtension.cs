@@ -1,5 +1,5 @@
-﻿using MarkPad.Extensions;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
+using MarkPad.Extensions.Host;
 
 namespace MarkPad.Extensions
 {

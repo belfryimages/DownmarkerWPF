@@ -17,6 +17,7 @@ using MarkPad.Services.Settings;
 using MarkPad.XAML;
 using MarkPad.Extensions;
 using System.ComponentModel.Composition;
+using MarkPad.Extensions.Host;
 
 namespace MarkPad.Document
 {
@@ -35,7 +36,7 @@ namespace MarkPad.Document
         private MarkPadSettings settings;
 		[ImportMany(AllowRecomposition = true)]
 		private IEnumerable<IDocumentViewExtension> extensions;
-		private IEnumerable<IDocumentViewExtension> appliedExtensions = new IDocumentViewExtension[0];
+		private IEnumerable<IDocumentViewExtension> connectedExtensions = new IDocumentViewExtension[0];
 
 		public DocumentView(
 			ISettingsProvider settingsProvider,
@@ -127,36 +128,6 @@ namespace MarkPad.Document
         private void ApplyFont()
         {
             markdownEditor.Editor.FontFamily = GetFontFamily();
-        }
-
-        private void ApplyExtensions()
-        {
-			foreach (var extension in appliedExtensions.Except(extensions))
-			{
-				extension.DisconnectFromDocumentView(this);
-			}
-
-			foreach (var extension in extensions.Except(appliedExtensions))
-			{
-				// No IOC for extensions, so have to plug this in manually...
-				if (extension is ISpellCheckExtension)
-				{
-					var spellCheckExtension = extension as ISpellCheckExtension;
-					spellCheckExtension.SpellingService = IoC.Get<ISpellingService>();
-					spellCheckExtension.SpellCheckProviderFactory = new Func<ISpellingService, IDocumentView, ISpellCheckProvider>(
-						(spellingService, documentView) =>
-						{
-							var view = (DocumentView)documentView;
-							return new MarkPad.MarkPadExtensions.SpellCheck.SpellCheckProvider(
-								spellingService,
-								view);
-						});
-				}
-
-				extension.ConnectToDocumentView(this);
-			}
-
-			appliedExtensions = new List<IDocumentViewExtension>(extensions);
         }
 
         void WebControlLinkClicked(object sender, OpenExternalLinkEventArgs e)
@@ -296,7 +267,35 @@ namespace MarkPad.Document
 
 		public void Handle(ExtensionsChangedEvent e)
 		{
-            ApplyExtensions();
+			markPadExtensionsManager.Container.ComposeParts(this);
+
+			foreach (var extension in connectedExtensions.Except(extensions))
+			{
+				extension.DisconnectFromDocumentView(this);
+			}
+
+			foreach (var extension in extensions.Except(connectedExtensions))
+			{
+				// No IOC for extensions, so have to plug this in manually...
+				// This should be changed to something cleaner
+				if (extension is ISpellCheckExtension)
+				{
+					var spellCheckExtension = extension as ISpellCheckExtension;
+					spellCheckExtension.SpellingService = IoC.Get<ISpellingService>();
+					spellCheckExtension.SpellCheckProviderFactory = new Func<ISpellingService, IDocumentView, ISpellCheckProvider>(
+						(spellingService, documentView) =>
+						{
+							var view = (DocumentView)documentView;
+							return new MarkPad.MarkPadExtensions.SpellCheck.SpellCheckProvider(
+								spellingService,
+								view);
+						});
+				}
+
+				extension.ConnectToDocumentView(this);
+			}
+
+			connectedExtensions = new List<IDocumentViewExtension>(extensions);
 		}
     }
 }
