@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using MarkPad.Extensions.Host;
+using MarkPad.Contracts;
 
 namespace MarkPad.Extensions
 {

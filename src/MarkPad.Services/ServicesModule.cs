@@ -2,7 +2,7 @@ using Autofac;
 using MarkPad.Services.Implementation;
 using MarkPad.Services.Interfaces;
 using MarkPad.Services.Settings;
-using MarkPad.Extensions.Host;
+using MarkPad.Contracts;
 
 namespace MarkPad.Services
 {

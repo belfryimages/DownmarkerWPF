@@ -7,7 +7,7 @@ using MarkPad.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Document;
 using MarkPad.Extensions;
-using MarkPad.Extensions.Host;
+using MarkPad.Contracts;
 
 namespace MarkPad.MarkPadExtensions.SpellCheck
 {

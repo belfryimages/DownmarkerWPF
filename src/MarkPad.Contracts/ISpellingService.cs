@@ -1,6 +1,6 @@
 using MarkPad.XAML.Converters;
 
-namespace MarkPad.Extensions.Host
+namespace MarkPad.Contracts
 {
     public enum SpellingLanguages
     {

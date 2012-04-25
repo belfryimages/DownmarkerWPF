@@ -55,7 +55,7 @@ namespace MarkPad.Settings
 		public bool CanInstall { get { return GetInstalledPackage() == null; } }
 		public void Install()
 		{
-			_packageManager.InstallPackage(_package, false, false);
+			_packageManager.InstallPackage(_package, true, false);
 			NotifyChangedInstallationStatus();
 		}
 
@@ -79,7 +79,7 @@ namespace MarkPad.Settings
 		}
 		public void Update()
 		{
-			_packageManager.UpdatePackage(_package, true, false);
+			_packageManager.UpdatePackage(_package, false, false);
 			_eventAggregator.Publish(new ExtensionsChangedEvent());
 			NotifyChangedInstallationStatus();
 		}

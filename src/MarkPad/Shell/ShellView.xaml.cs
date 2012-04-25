@@ -17,7 +17,9 @@ namespace MarkPad.Shell
 
         private bool ignoreNextMouseMove;
 		[ImportMany(AllowRecomposition = true)]
-		private IEnumerable<ICanCreateNewPage> newPageCreators;
+		private IEnumerable<ICanCreateNewPage> canCreateNewPageExtensions;
+		[ImportMany(AllowRecomposition = true)]
+		private IEnumerable<ICanSavePage> canSavePageExtensions;
 
 		public ShellView(IMarkPadExtensionsManager markPadExtensionsManager)
 		{
@@ -123,27 +125,45 @@ namespace MarkPad.Shell
 			this.markPadExtensionsManager.Container.ComposeParts(this);
 
 			newPageHook.Children.Clear();
-			foreach (var creator in newPageCreators)
+			foreach (var extension in canCreateNewPageExtensions)
 			{
-				var button = new Button
-				{
-					Content = creator.CreateNewPageLabel.ToUpper(),
-					Tag = creator
-				};
-				button.Click += newPageHookButtonClick;
-				newPageHook.Children.Add(button);
+				HookExtension(extension, extension.CreateNewPageLabel, newPageHookButtonClick, newPageHook);
 			}
+			foreach (var extension in canSavePageExtensions)
+			{
+				HookExtension(extension, extension.SavePageLabel, savePageHookButtonClick, savePageHook);
+			}
+		}
+
+		void HookExtension(IMarkPadExtension extension, string label, RoutedEventHandler handler, WrapPanel wrapPanel)
+		{
+			var button = new Button
+			{
+				Content = label.ToUpper(),
+				Tag = extension
+			};
+			button.Click += new RoutedEventHandler(handler);
+			wrapPanel.Children.Add(button);
 		}
 
 		void newPageHookButtonClick(object sender, RoutedEventArgs e)
 		{
 			var button = (Button)e.Source;
-			var creator = (ICanCreateNewPage)button.Tag;
+			var extension = (ICanCreateNewPage)button.Tag;
 			var viewModel = DataContext as ShellViewModel;
 
-			var text = creator.CreateNewPage();
+			var text = extension.CreateNewPage();
 
 			viewModel.ExecuteSafely(vm => vm.NewDocument(text));
 		}
-    }
+
+		void savePageHookButtonClick(object sender, RoutedEventArgs e)
+		{
+			var button = (Button)e.Source;
+			var extension = (ICanSavePage)button.Tag;
+			var viewModel = DataContext as ShellViewModel;
+
+			extension.SavePage(viewModel.ActiveDocumentViewModel);
+		}
+	}
 }

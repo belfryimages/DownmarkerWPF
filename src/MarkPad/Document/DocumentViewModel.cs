@@ -12,10 +12,11 @@ using MarkPad.Services.Interfaces;
 using MarkPad.Services.Metaweblog;
 using MarkPad.Services.Settings;
 using Ookii.Dialogs.Wpf;
+using MarkPad.Contracts;
 
 namespace MarkPad.Document
 {
-    internal class DocumentViewModel : Screen
+	internal class DocumentViewModel : Screen, IDocumentViewModel
     {
         private static readonly ILog Log = LogManager.GetLog(typeof(DocumentViewModel));
 
@@ -23,22 +24,38 @@ namespace MarkPad.Document
         private readonly IWindowManager windowManager;
         private readonly ISiteContextGenerator siteContextGenerator;
         private readonly Func<string, IMetaWeblogService> getMetaWeblog;
+		private readonly IDocumentParser documentParser;
 
         private readonly TimeSpan delay = TimeSpan.FromSeconds(0.5);
         private readonly DispatcherTimer timer;
 
-        private string title;
-        private string filename;
-        private ISiteContext siteContext;
+		public ISiteContext SiteContext { get; private set; }
+		public string FileName { get; private set; }
+		public string Title { get; set; }
+		public TextDocument Document { get; set; }
+		public string Original { get; set; }
+		public string Render { get; private set; }
+		public string MarkdownContent { get { return Document.Text; } }
+		
+		public override string DisplayName
+		{
+			get { return Title; }
+		}
 
-        public DocumentViewModel(IDialogService dialogService, IWindowManager windowManager, ISiteContextGenerator siteContextGenerator, Func<string, IMetaWeblogService> getMetaWeblog )
+        public DocumentViewModel(
+			IDialogService dialogService, 
+			IWindowManager windowManager, 
+			ISiteContextGenerator siteContextGenerator, 
+			Func<string, IMetaWeblogService> getMetaWeblog,
+			IDocumentParser documentParser)
         {
             this.dialogService = dialogService;
             this.windowManager = windowManager;
             this.siteContextGenerator = siteContextGenerator;
             this.getMetaWeblog = getMetaWeblog;
+			this.documentParser = documentParser;
 
-            title = "New Document";
+            Title = "New Document";
             Original = "";
             Document = new TextDocument();
             Post = new Post();
@@ -51,7 +68,7 @@ namespace MarkPad.Document
         {
             timer.Stop();
 
-            Task.Factory.StartNew(text => DocumentParser.Parse(text.ToString()), Document.Text)
+			Task.Factory.StartNew(text => documentParser.Parse(text.ToString()), Document.Text)
             .ContinueWith(s =>
             {
                 if (s.IsFaulted)
@@ -61,9 +78,9 @@ namespace MarkPad.Document
                 }
 
                 var result = s.Result;
-                if (siteContext != null)
+                if (SiteContext != null)
                 {
-                    result = siteContext.ConvertToAbsolutePaths(result);
+                    result = SiteContext.ConvertToAbsolutePaths(result);
                 }
 
                 Render = result;
@@ -72,8 +89,8 @@ namespace MarkPad.Document
 
         public void Open(string path)
         {
-            filename = path;
-            title = new FileInfo(path).Name;
+            FileName = path;
+            Title = new FileInfo(path).Name;
 
             var text = File.ReadAllText(path);
             Document.Text = text;
@@ -87,7 +104,7 @@ namespace MarkPad.Document
         {
             Post = post;
 
-            title = post.permalink ?? string.Empty; // TODO: no title is displayed now
+            Title = post.permalink ?? string.Empty; // TODO: no title is displayed now
             Document.Text = post.description ?? string.Empty;
             Original = post.description ?? string.Empty;
 
@@ -112,8 +129,8 @@ namespace MarkPad.Document
             if (string.IsNullOrEmpty(path))
                 return false;
 
-            filename = path;
-            title = new FileInfo(filename).Name;
+            FileName = path;
+            Title = new FileInfo(FileName).Name;
             NotifyOfPropertyChange(() => DisplayName);
             EvaluateContext();
 
@@ -125,43 +142,43 @@ namespace MarkPad.Document
             if (!HasChanges)
                 return true;
 
-            if (string.IsNullOrEmpty(filename))
+            if (string.IsNullOrEmpty(FileName))
             {
                 var path = dialogService.GetFileSavePath("Choose a location to save the document.", "*.md", Constants.FileAssociationExtensionFilter + "|All Files (*.*)|*.*");
 
                 if (string.IsNullOrEmpty(path))
                     return false;
 
-                filename = path;
-                title = new FileInfo(filename).Name;
+                FileName = path;
+                Title = new FileInfo(FileName).Name;
                 NotifyOfPropertyChange(() => DisplayName);
                 EvaluateContext();
             }
 
             try
             {
-                File.WriteAllText(filename, Document.Text);
+                File.WriteAllText(FileName, Document.Text);
                 Original = Document.Text;
             }
             catch (Exception)
             {
                 var saveResult = dialogService.ShowConfirmation("MarkPad", "Cannot save file",
-                                                String.Format("Do you want to save changes for {0} to a different file?", title),
+                                                String.Format("Do you want to save changes for {0} to a different file?", Title),
                                                 new ButtonExtras(ButtonType.Yes, "Save", "Save the file at a different location."),
                                                 new ButtonExtras(ButtonType.No, "Do not save", "The file will be considered a New Document.  The next save will prompt for a file location."));
 
-                string prevFileName = filename;
-                string prevTitle = title;
+                string prevFileName = FileName;
+                string prevTitle = Title;
 
-                title = "New Document";
-                filename = "";
+                Title = "New Document";
+                FileName = "";
                 if (saveResult)
                 {
                     saveResult = Save();
                     if (!saveResult)  //We decide not to save, keep existing title and filename 
                     {
-                        title = prevTitle;
-                        filename = prevFileName;
+                        Title = prevTitle;
+                        FileName = prevFileName;
                     }
                 }
 
@@ -174,34 +191,12 @@ namespace MarkPad.Document
 
         private void EvaluateContext()
         {
-            siteContext = siteContextGenerator.GetContext(filename);
+            SiteContext = siteContextGenerator.GetContext(FileName);
         }
-
-        public TextDocument Document { get; set; }
-
-        public string Original { get; set; }
-
-        public string Render { get; private set; }
 
         public bool HasChanges
         {
             get { return Original != Document.Text; }
-        }
-
-        public override string DisplayName
-        {
-            get { return title; }
-        }
-
-        public string FileName
-        {
-            get { return filename; }
-        }
-
-        public string Title
-        {
-            get { return title; }
-            set { title = value; }
         }
 
         public override void CanClose(Action<bool> callback)
@@ -215,9 +210,9 @@ namespace MarkPad.Document
                 return;
             }
 
-            var saveResult = dialogService.ShowConfirmationWithCancel("MarkPad", "Save modifications.", "Do you want to save your changes to '" + title + "'?",
+            var saveResult = dialogService.ShowConfirmationWithCancel("MarkPad", "Save modifications.", "Do you want to save your changes to '" + Title + "'?",
                 new ButtonExtras(ButtonType.Yes, "Save",
-                    string.IsNullOrEmpty(filename) ? "The file has not been saved yet" : "The file will be saved to " + Path.GetFullPath(filename)),
+                    string.IsNullOrEmpty(FileName) ? "The file has not been saved yet" : "The file will be saved to " + Path.GetFullPath(FileName)),
                 new ButtonExtras(ButtonType.No, "Don't Save", "Close the document without saving the modifications"),
                 new ButtonExtras(ButtonType.Cancel, "Cancel", "Don't close the document")
             );
@@ -262,11 +257,6 @@ namespace MarkPad.Document
         }
 
         public bool DistractionFree { get; set; }
-
-        public ISiteContext SiteContext
-        {
-            get { return siteContext; }
-        }
 
         public void Publish(string postid, string postTitle, string[] categories, BlogSetting blog)
         {
@@ -322,7 +312,7 @@ namespace MarkPad.Document
 
             Post = newpost;
             Original = Document.Text;
-            title = postTitle;
+            Title = postTitle;
             NotifyOfPropertyChange(() => DisplayName);
         }
 

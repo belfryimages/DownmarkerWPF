@@ -4,6 +4,8 @@ using NuGet;
 using System.IO;
 using MarkPad.MarkPadExtensions;
 using MarkPad.Settings;
+using MarkPad.Document;
+using MarkPad.Contracts;
 
 namespace MarkPad
 {
@@ -25,6 +27,7 @@ namespace MarkPad
 
 			builder.RegisterType<MarkPadExtensionViewModel>();
 			builder.RegisterType<MarkPadExtensionsManager>().As<IMarkPadExtensionsManager>().SingleInstance();
+			builder.RegisterType<DocumentParser>().As<IDocumentParser>();
 		}
 	}
 }

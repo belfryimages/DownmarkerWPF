@@ -17,7 +17,7 @@ using MarkPad.Services.Settings;
 using MarkPad.XAML;
 using MarkPad.Extensions;
 using System.ComponentModel.Composition;
-using MarkPad.Extensions.Host;
+using MarkPad.Contracts;
 
 namespace MarkPad.Document
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MarkPad.Extensions;
-using MarkPad.Extensions.Host;
+using MarkPad.Contracts;
 
 namespace SpellCheck
 {

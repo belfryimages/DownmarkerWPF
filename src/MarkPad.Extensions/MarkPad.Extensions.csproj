@@ -44,21 +44,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ICanCreateNewPage.cs" />
-    <Compile Include="Host\IDocumentView.cs" />
+    <Compile Include="ICanSavePage.cs" />
     <Compile Include="IDocumentViewExtension.cs" />
     <Compile Include="IMarkPadExtension.cs" />
     <Compile Include="ISpellCheckExtension.cs" />
-    <Compile Include="Host\ISpellCheckProvider.cs" />
-    <Compile Include="Host\ISpellingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MarkPad.XAML\MarkPad.XAML.csproj">
-      <Project>{F5C76E3F-AC91-477D-86DE-778850F3E14B}</Project>
-      <Name>MarkPad.XAML</Name>
+    <ProjectReference Include="..\MarkPad.Contracts\MarkPad.Contracts.csproj">
+      <Project>{8E363365-2046-4C9C-B9B5-869E798502CA}</Project>
+      <Name>MarkPad.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
