@@ -278,11 +278,12 @@ namespace MarkPad.Document
 			{
 				// No IOC for extensions, so have to plug this in manually...
 				// This should be changed to something cleaner
+				/*
 				if (extension is ISpellCheckExtension)
 				{
 					var spellCheckExtension = extension as ISpellCheckExtension;
-					spellCheckExtension.SpellingService = IoC.Get<ISpellingService>();
-					spellCheckExtension.SpellCheckProviderFactory = new Func<ISpellingService, IDocumentView, ISpellCheckProvider>(
+					spellCheckExtension._spellingService = IoC.Get<ISpellingService>();
+					spellCheckExtension._spellCheckProviderFactory = new Func<ISpellingService, IDocumentView, ISpellCheckProvider>(
 						(spellingService, documentView) =>
 						{
 							var view = (DocumentView)documentView;
@@ -291,7 +292,7 @@ namespace MarkPad.Document
 								view);
 						});
 				}
-
+				*/
 				extension.ConnectToDocumentView(this);
 			}
 

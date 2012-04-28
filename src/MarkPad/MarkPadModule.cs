@@ -6,6 +6,7 @@ using MarkPad.MarkPadExtensions;
 using MarkPad.Settings;
 using MarkPad.Document;
 using MarkPad.Contracts;
+using System.ComponentModel.Composition;
 
 namespace MarkPad
 {

@@ -8,9 +8,19 @@ using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Document;
 using MarkPad.Extensions;
 using MarkPad.Contracts;
+using System.ComponentModel.Composition;
 
 namespace MarkPad.MarkPadExtensions.SpellCheck
 {
+	[Export(typeof(ISpellCheckProviderFactory))]
+	public class SpellCheckProviderFactory : ISpellCheckProviderFactory
+	{
+		public ISpellCheckProvider GetProvider(ISpellingService spellingService, IDocumentView view)
+		{
+			return new SpellCheckProvider(spellingService, (DocumentView)view);
+		}
+	}
+
     public class SpellCheckProvider : ISpellCheckProvider
     {
         readonly Regex wordSeparatorRegex = new Regex("-[^\\w]+|^'[^\\w]+|[^\\w]+'[^\\w]+|[^\\w]+-[^\\w]+|[^\\w]+'$|[^\\w]+-$|^-$|^'$|[^\\w'-]", RegexOptions.Compiled);

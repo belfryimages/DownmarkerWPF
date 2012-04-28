@@ -7,9 +7,11 @@ using MarkPad.Services.Interfaces;
 using NHunspell;
 using MarkPad.Extensions;
 using MarkPad.Contracts;
+using System.ComponentModel.Composition;
 
 namespace MarkPad.Services.Implementation
 {
+	[Export(typeof(ISpellingService))]
     public class SpellingService : ISpellingService
     {
         private static readonly Dictionary<SpellingLanguages, string> langLookup;

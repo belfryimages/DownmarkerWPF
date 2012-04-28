@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using MarkPad.Extensions;
 using MarkPad.Contracts;
+using System.ComponentModel.Composition;
 
 namespace SpellCheck
 {
-	public class SpellCheckExtension : ISpellCheckExtension
+	public class SpellCheckExtension : IDocumentViewExtension
     {
-        public string Name { get { return "Spell check"; } }
-		public ISpellingService SpellingService { get; set; }
-		public Func<ISpellingService, IDocumentView, ISpellCheckProvider> SpellCheckProviderFactory { get; set; }
+		[Import]
+		ISpellingService _spellingService;
+		[Import]
+		ISpellCheckProviderFactory _spellCheckProviderFactory;
+        
+		public string Name { get { return "Spell check"; } }
 		
 		IList<ISpellCheckProvider> providers = new List<ISpellCheckProvider>();
 
@@ -21,7 +25,7 @@ namespace SpellCheck
 				throw new ArgumentException("View already has a spell check provider connected", "view");
 			}
 
-			var provider = SpellCheckProviderFactory(SpellingService, view);
+			var provider = _spellCheckProviderFactory.GetProvider(_spellingService, view);
             providers.Add(provider);
         }
 

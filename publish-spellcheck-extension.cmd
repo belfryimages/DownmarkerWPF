@@ -1,0 +1,2 @@
+@echo off & setlocal enableextensions
+call publish-extension.cmd SpellCheck

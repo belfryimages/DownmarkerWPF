@@ -46,6 +46,7 @@
     <Compile Include="IDocumentView.cs" />
     <Compile Include="IDocumentViewModel.cs" />
     <Compile Include="ISpellCheckProvider.cs" />
+    <Compile Include="ISpellCheckProviderFactory.cs" />
     <Compile Include="ISpellingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
