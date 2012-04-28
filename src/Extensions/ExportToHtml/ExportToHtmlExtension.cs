@@ -53,9 +53,7 @@ namespace ExportToHtml
 		}
 	}
 
-	public class ExportToHtmlExtensionSettings : IExtensionSettings
+	public class ExportToHtmlExtensionSettings : ExtensionSettings
 	{
-		[DefaultValue(true)]
-		public bool IsEnabled { get; set; }
 	}
 }

@@ -48,9 +48,7 @@ namespace SpellCheck
         }
     }
 
-	public class SpellCheckExtensionSettings : IExtensionSettings
+	public class SpellCheckExtensionSettings : ExtensionSettings
 	{
-		[DefaultValue(true)]
-		public bool IsEnabled { get; set; }
 	}
 }
