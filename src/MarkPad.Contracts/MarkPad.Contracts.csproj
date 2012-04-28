@@ -45,6 +45,7 @@
     <Compile Include="IDocumentParser.cs" />
     <Compile Include="IDocumentView.cs" />
     <Compile Include="IDocumentViewModel.cs" />
+    <Compile Include="IExtensionSettingsProvider.cs" />
     <Compile Include="ISpellCheckProvider.cs" />
     <Compile Include="ISpellCheckProviderFactory.cs" />
     <Compile Include="ISpellingService.cs" />

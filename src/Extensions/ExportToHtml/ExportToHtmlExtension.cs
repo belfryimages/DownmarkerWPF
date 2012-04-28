@@ -7,6 +7,7 @@ using MarkPad.Contracts;
 using Analects.DialogService;
 using System.IO;
 using System.ComponentModel.Composition;
+using System.ComponentModel;
 
 namespace ExportToHtml
 {
@@ -17,6 +18,8 @@ namespace ExportToHtml
 		const string SAVE_FILTER = "HTML Files (*.html,*.htm)|*.html;*.htm|All Files (*.*)|*.*";
 
 		[Import]
+		IExtensionSettingsProvider _settingsProvider;
+		[Import]
 		IDocumentParser documentParser;
 
 		public string Name
@@ -24,9 +27,17 @@ namespace ExportToHtml
 			get { return "Export to HTML"; }
 		}
 
+		ExportToHtmlExtensionSettings _settings;
+		public IExtensionSettings Settings { get { return _settings; } }
+
 		public string SavePageLabel
 		{
 			get { return "Save HTML"; }
+		}
+
+		public ExportToHtmlExtension()
+		{
+			_settings = _settingsProvider.GetSettings<ExportToHtmlExtensionSettings>();
 		}
 
 		public void SavePage(IDocumentViewModel documentViewModel)
@@ -40,5 +51,11 @@ namespace ExportToHtml
 
 			File.WriteAllText(filename, html);
 		}
+	}
+
+	public class ExportToHtmlExtensionSettings : IExtensionSettings
+	{
+		[DefaultValue(true)]
+		public bool IsEnabled { get; set; }
 	}
 }

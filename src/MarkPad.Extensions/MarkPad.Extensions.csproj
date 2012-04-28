@@ -47,6 +47,7 @@
     <Compile Include="ICanSavePage.cs" />
     <Compile Include="IDocumentViewExtension.cs" />
     <Compile Include="IMarkPadExtension.cs" />
+    <Compile Include="IExtensionSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

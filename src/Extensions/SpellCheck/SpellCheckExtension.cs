@@ -4,19 +4,28 @@ using System.Linq;
 using MarkPad.Extensions;
 using MarkPad.Contracts;
 using System.ComponentModel.Composition;
+using System.ComponentModel;
 
 namespace SpellCheck
 {
 	public class SpellCheckExtension : IDocumentViewExtension
     {
 		[Import]
+		IExtensionSettingsProvider _settingsProvider;
+		[Import]
 		ISpellingService _spellingService;
 		[Import]
 		ISpellCheckProviderFactory _spellCheckProviderFactory;
         
 		public string Name { get { return "Spell check"; } }
-		
+		SpellCheckExtensionSettings _settings;
+		public IExtensionSettings Settings { get { return _settings; } }
 		IList<ISpellCheckProvider> providers = new List<ISpellCheckProvider>();
+
+		public SpellCheckExtension()
+		{
+			_settings = _settingsProvider.GetSettings<SpellCheckExtensionSettings>();
+		}
 
         public void ConnectToDocumentView(IDocumentView view)
         {
@@ -38,4 +47,10 @@ namespace SpellCheck
             providers.Remove(provider);
         }
     }
+
+	public class SpellCheckExtensionSettings : IExtensionSettings
+	{
+		[DefaultValue(true)]
+		public bool IsEnabled { get; set; }
+	}
 }

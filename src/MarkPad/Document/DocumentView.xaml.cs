@@ -276,23 +276,6 @@ namespace MarkPad.Document
 
 			foreach (var extension in extensions.Except(connectedExtensions))
 			{
-				// No IOC for extensions, so have to plug this in manually...
-				// This should be changed to something cleaner
-				/*
-				if (extension is ISpellCheckExtension)
-				{
-					var spellCheckExtension = extension as ISpellCheckExtension;
-					spellCheckExtension._spellingService = IoC.Get<ISpellingService>();
-					spellCheckExtension._spellCheckProviderFactory = new Func<ISpellingService, IDocumentView, ISpellCheckProvider>(
-						(spellingService, documentView) =>
-						{
-							var view = (DocumentView)documentView;
-							return new MarkPad.MarkPadExtensions.SpellCheck.SpellCheckProvider(
-								spellingService,
-								view);
-						});
-				}
-				*/
 				extension.ConnectToDocumentView(this);
 			}
 

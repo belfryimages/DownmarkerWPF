@@ -10,5 +10,6 @@ namespace MarkPad.Extensions
 	public interface IMarkPadExtension
 	{
 		string Name { get; }
+		IExtensionSettings Settings { get; }
 	}
 }
